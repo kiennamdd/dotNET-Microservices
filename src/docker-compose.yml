@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  micro-mongo-discountdb:
+    container_name: micro-mongo-discountdb
+    image: mongo
+
+  micro-discount-api:
+    container_name: micro-discount-api
+    image: ${DOCKER_REGISTRY-}discountapi
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.API/Dockerfile
