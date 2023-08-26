@@ -46,6 +46,18 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseRouting();
+app.UseEndpoints(endpoints => 
+{
+    endpoints.MapGet("/", (context) => 
+    {
+        context.Response.Redirect("/swagger/index.html");
+        return Task.CompletedTask;
+    });
+
+    endpoints.MapControllers();
+});
+
+//app.MapControllers();
 
 app.Run();

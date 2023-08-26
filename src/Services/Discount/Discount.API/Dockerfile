@@ -1,19 +1,21 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 
+ENV ASPNETCORE_URLS=http://+:80
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ARG configuration=Release
 WORKDIR /src
 COPY ["Services/Discount/Discount.API/Discount.API.csproj", "Services/Discount/Discount.API/"]
 RUN dotnet restore "Services/Discount/Discount.API/Discount.API.csproj"
 COPY . .
 WORKDIR "/src/Services/Discount/Discount.API"
-RUN dotnet build "Discount.API.csproj" -c Release -o /app/build
+RUN dotnet build "Discount.API.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Discount.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+ARG configuration=Release
+RUN dotnet publish "Discount.API.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

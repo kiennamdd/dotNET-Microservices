@@ -9,6 +9,14 @@ services:
     ports:
       - "27017:27017" 
 
+  micro-sqlserver-catalogdb:
+    restart: always
+    environment:
+      - MSSQL_SA_PASSWORD=Admin1234@
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
   micro-discount-api:
     restart: always
     environment:
@@ -18,3 +26,15 @@ services:
       - "8001:80"
     depends_on:
       - micro-mongo-discountdb
+
+  micro-catalog-api:
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SqlServer=Server=micro-sqlserver-catalogdb,1433;Database=Catalogdb;User ID=SA;Password=Admin1234@
+      - ServiceApiUrls__DiscountApi=http://micro-discount-api:80
+    ports:
+      - "8002:80"
+    depends_on:
+      - micro-sqlserver-catalogdb
+
