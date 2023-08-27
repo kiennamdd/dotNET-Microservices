@@ -80,8 +80,8 @@ namespace Catalog.API.Services
             {
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
-                string defaultPath = Path.GetFullPath(Path.Combine(@"wwwroot/SavedFiles", fileName));
-                string chosenPath = Path.GetFullPath(Path.Combine(saveToFolder, fileName));
+                string defaultPath = Path.Combine(@"wwwroot/SavedFiles", fileName);
+                string chosenPath = Path.Combine(saveToFolder, fileName);
 
                 string localPath = string.IsNullOrEmpty(saveToFolder) ? defaultPath : chosenPath;
                 string fullLocalPath = Path.Combine(Directory.GetCurrentDirectory(), localPath);

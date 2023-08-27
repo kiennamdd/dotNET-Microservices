@@ -16,21 +16,28 @@ namespace Catalog.API.Services.Infrastructure
 
         public async Task<CouponDto?> GetCouponByCodeAsync(string code)
         {
-            HttpClient client = _httpClientFactory.CreateClient(ApiServices.DiscountApi);
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient(ApiServices.DiscountApi);
 
-            HttpResponseMessage responseMessage = await client.GetAsync($"/api/discount/coupons/withcode/{code}");
-
-            string content = await responseMessage.Content.ReadAsStringAsync();
-
-            ResponseDto? responseDto = JsonConvert.DeserializeObject<ResponseDto>(content);
-
-            if(responseDto is null || responseDto.IsSuccess == false)
+                HttpResponseMessage responseMessage = await client.GetAsync($"/api/discount/coupons/withcode/{code}");
+    
+                string content = await responseMessage.Content.ReadAsStringAsync();
+    
+                ResponseDto? responseDto = JsonConvert.DeserializeObject<ResponseDto>(content);
+    
+                if(responseDto is null || responseDto.IsSuccess == false)
+                    return null;
+    
+                string resultStr = Convert.ToString(responseDto.Result) ?? "";
+    
+                CouponDto? couponDto = JsonConvert.DeserializeObject<CouponDto>(resultStr);
+                return couponDto;
+            }
+            catch
+            {
                 return null;
-
-            string resultStr = Convert.ToString(responseDto.Result) ?? "";
-
-            CouponDto? couponDto = JsonConvert.DeserializeObject<CouponDto>(resultStr);
-            return couponDto;
+            }
         }
     }
 }
