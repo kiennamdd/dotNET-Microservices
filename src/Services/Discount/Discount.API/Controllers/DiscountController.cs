@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Discount.API.Domain.Constants;
 using Discount.API.Domain.Entities;
 using Discount.API.Interfaces;
 using Discount.API.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -31,6 +33,7 @@ namespace Discount.API.Controllers
 
         [HttpGet]
         [Route("coupons")]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> GetCouponList()
         {
             var list = await _couponRepository.GetListAsync();
@@ -71,6 +74,7 @@ namespace Discount.API.Controllers
 
         [HttpPost]
         [Route("coupons")]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> Post([FromBody] CouponCreateRequest couponCreateRequest)
         {
             _couponCreateValidator.ValidateAndThrow(couponCreateRequest);
@@ -94,6 +98,7 @@ namespace Discount.API.Controllers
 
         [HttpDelete]
         [Route("coupons/{id}")]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> Delete(string id)
         {
             if (!ObjectId.TryParse(id, out _))

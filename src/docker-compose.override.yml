@@ -2,15 +2,13 @@ version: '3.4'
 
 services:
   micro-mongo-discountdb:
-    restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=Admin1234@
     ports:
       - "27017:27017" 
 
-  micro-sqlserver-catalogdb:
-    restart: always
+  micro-sqlserver:
     environment:
       - MSSQL_SA_PASSWORD=Admin1234@
       - ACCEPT_EULA=Y
@@ -18,7 +16,6 @@ services:
       - "1433:1433"
 
   micro-discount-api:
-    restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__MongoDb=mongodb://admin:Admin1234%40@micro-mongo-discountdb:27017/
@@ -28,13 +25,22 @@ services:
       - micro-mongo-discountdb
 
   micro-catalog-api:
-    restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__SqlServer=Server=micro-sqlserver-catalogdb,1433;Database=Catalogdb;User ID=SA;Password=Admin1234@
+      - ConnectionStrings__SqlServer=Server=micro-sqlserver,1433;Database=Catalogdb;User ID=SA;Password=Admin1234@
       - ServiceApiUrls__DiscountApi=http://micro-discount-api:80
     ports:
       - "8002:80"
     depends_on:
-      - micro-sqlserver-catalogdb
+      - micro-sqlserver
+      - micro-identity-api
+
+  micro-identity-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SqlServer=Server=micro-sqlserver,1433;Database=IdentityDb;User ID=SA;Password=Admin1234@
+    ports:
+      - "8000:80"
+    depends_on:
+      - micro-sqlserver
 

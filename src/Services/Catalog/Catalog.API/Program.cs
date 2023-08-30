@@ -12,6 +12,9 @@ using Catalog.API.Interfaces.Infrastructure;
 using Catalog.API.Services.Infrastructure;
 using Catalog.API.Handlers;
 using Catalog.API.Domain.Constants;
+using Catalog.API.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,8 +54,33 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => 
+{
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
 
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            }, new string[]{}
+        }
+    });
+});
+
+builder.Services.AddAppAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -61,16 +89,18 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    await app.InitialiseDatabase();
+    await app.InitialiseDatabaseAsync();
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseStaticFiles();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseRouting();
 app.UseEndpoints(endpoints => 
 {
     endpoints.MapGet("/", (context) => 

@@ -1,7 +1,9 @@
 using AutoMapper;
+using Catalog.API.Domain.Constants;
 using Catalog.API.Domain.Entities;
 using Catalog.API.Interfaces;
 using Catalog.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.API.Controllers
@@ -30,6 +32,7 @@ namespace Catalog.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> Post([FromBody] string categoryName)
         {
             categoryName = categoryName.Trim();
@@ -56,6 +59,7 @@ namespace Catalog.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> Put([FromBody] int id, string categoryName)
         {
             categoryName = categoryName.Trim();
@@ -94,8 +98,10 @@ namespace Catalog.API.Controllers
             return ResponseDto.Success($"Category updated successfully.");
         }
 
+        [NonAction]
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> Delete(int id)
         {
             Category? existedCategory = await _categoryRepository.GetByIdAsync(id);

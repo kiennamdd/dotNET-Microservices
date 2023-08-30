@@ -46,12 +46,12 @@
             "dockerBuild": {
                 "tag": "src:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/Services/Discount/Discount.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Services/Identity/Identity.API/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Discount/Discount.API/Discount.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Identity/Identity.API/Identity.API.csproj"
             }
         },
         {
@@ -62,7 +62,7 @@
             ],
             "dockerBuild": {
                 "tag": "src:latest",
-                "dockerfile": "${workspaceFolder}/Services/Discount/Discount.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Services/Identity/Identity.API/Dockerfile",
                 "context": "${workspaceFolder}",
                 "platform": {
                     "os": "linux",
@@ -71,7 +71,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Discount/Discount.API/Discount.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Identity/Identity.API/Identity.API.csproj"
             }
         },
         {
@@ -82,7 +82,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Discount/Discount.API/Discount.API.csproj",
+                "appProject": "${workspaceFolder}/Services/Identity/Identity.API/Identity.API.csproj",
                 "enableDebugging": true,
                 "configureSsl": false
             }
@@ -95,7 +95,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Discount/Discount.API/Discount.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Identity/Identity.API/Identity.API.csproj"
             }
         }
     ]

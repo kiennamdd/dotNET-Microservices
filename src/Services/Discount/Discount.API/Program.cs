@@ -1,10 +1,13 @@
 using Discount.API.Data;
+using Discount.API.Extensions;
 using Discount.API.Interfaces;
 using Discount.API.Middlewares;
 using Discount.API.Repositories;
 using Discount.API.Services;
 using Discount.API.Validators;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 using Stripe;
 using System.Reflection;
 
@@ -28,7 +31,33 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => 
+{
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            }, new string[]{}
+        }
+    });
+});
+
+builder.Services.AddAppAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -39,14 +68,16 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    await app.SeedDatabase();
+    await app.InitialiseDatabaseAsync();
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseRouting();
 app.UseEndpoints(endpoints => 
 {
     endpoints.MapGet("/", (context) => 

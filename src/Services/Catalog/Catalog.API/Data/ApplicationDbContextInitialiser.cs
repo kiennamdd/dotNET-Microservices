@@ -5,7 +5,7 @@ namespace Catalog.API.Data
 {
     public static class InitialiserExtensions
     {
-        public static async Task<WebApplication> InitialiseDatabase(this WebApplication app)
+        public static async Task<WebApplication> InitialiseDatabaseAsync(this WebApplication app)
         {
             using(var scope = app.Services.CreateScope())
             {

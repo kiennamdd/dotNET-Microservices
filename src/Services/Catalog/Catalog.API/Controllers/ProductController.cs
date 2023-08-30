@@ -5,6 +5,7 @@ using Catalog.API.Interfaces;
 using Catalog.API.Interfaces.Infrastructure;
 using Catalog.API.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PagedList;
 
@@ -148,7 +149,8 @@ namespace Catalog.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto> Post([FromForm] ProductCreateRequest productCreateRequest)
+        [Authorize(Roles = Roles.ADMIN)]
+        public async Task<ResponseDto> Post(ProductCreateRequest productCreateRequest)
         {
             await _productCreateValidator.ValidateAndThrowAsync(productCreateRequest);
 
@@ -223,6 +225,7 @@ namespace Catalog.API.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> Delete(string id)
         {
             if (!Guid.TryParse(id, out Guid productId))
@@ -283,6 +286,7 @@ namespace Catalog.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> Put(ProductUpdateRequest productUpdateRequest)
         {
             if(!Guid.TryParse(productUpdateRequest.Id, out Guid productId))
@@ -363,6 +367,7 @@ namespace Catalog.API.Controllers
 
         [HttpPost]
         [Route("RemoveImages")]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> RemoveImages(ProductImagesDeleteRequest productImagesDeleteRequest)
         {
             if(!Guid.TryParse(productImagesDeleteRequest.ProductId, out Guid productId))
@@ -408,7 +413,8 @@ namespace Catalog.API.Controllers
 
         [HttpPost]
         [Route("AddImages")]
-        public async Task<ResponseDto> AddImages([FromForm] ProductImagesAddRequest productImagesAddRequest)
+        [Authorize(Roles = Roles.ADMIN)]
+        public async Task<ResponseDto> AddImages(ProductImagesAddRequest productImagesAddRequest)
         {
             if(!Guid.TryParse(productImagesAddRequest.ProductId, out Guid productId))
             {

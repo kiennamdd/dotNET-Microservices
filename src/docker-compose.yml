@@ -7,9 +7,9 @@ services:
     image: mongo
     container_name: micro-mongo-discountdb
 
-  micro-sqlserver-catalogdb:
+  micro-sqlserver:
     image: mcr.microsoft.com/mssql/server
-    container_name: micro-sqlserver-catalogdb
+    container_name: micro-sqlserver
 
   micro-discount-api:
     image: micro-discount-api
@@ -24,4 +24,11 @@ services:
     build: 
       context: .
       dockerfile: Services\Catalog\Catalog.API\Dockerfile
+
+  micro-identity-api:
+    image: micro-identity-api
+    container_name: micro-identity-api
+    build: 
+      context: .
+      dockerfile: Services\Identity\Identity.API\Dockerfile
 
