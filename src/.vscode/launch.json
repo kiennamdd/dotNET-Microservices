@@ -62,12 +62,32 @@
             }
         },
         {
+            "name": "Email.API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Services/Email/Email.API/bin/Debug/net6.0/Email.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Services/Email/Email.API",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
             "name": "Docker .NET Launch",
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Identity/Identity.API/Identity.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Email/Email.API/Email.API.csproj"
             }
         }
     ],
@@ -75,8 +95,10 @@
         {
             "name": "Multiple Projects",
             "configurations": [
-                "Catalog.API",
-                "Discount.API"
+                //"Catalog.API",
+                //"Discount.API",
+                "Identity.API",
+                "Email.API"
             ]
         }
     ]

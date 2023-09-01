@@ -3,6 +3,10 @@
 version: '3.4'
 
 services:
+  micro-rabbitmq-management:
+    image: rabbitmq:management
+    container_name: micro-rabbitmq-management
+
   micro-mongo-discountdb:
     image: mongo
     container_name: micro-mongo-discountdb
@@ -31,4 +35,11 @@ services:
     build: 
       context: .
       dockerfile: Services\Identity\Identity.API\Dockerfile
+
+  micro-email-api:
+    image: micro-email-api
+    container_name: micro-email-api
+    build: 
+      context: .
+      dockerfile: Services\Email\Email.API\Dockerfile
 

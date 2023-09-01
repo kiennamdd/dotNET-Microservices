@@ -6,8 +6,8 @@ namespace Identity.API.Interfaces
 {
     public interface IIdentityService
     {
-        Task<bool> CreateUserAsync(RegisterRequest registerRequest);
-        Task<string> SignInAsync(SignInRequest signInRequest);
+        Task<bool> CreateUserAsync(ApplicationUser user, string password);
+        Task<string> SignInAsync(string email, string password);
         Task<bool> SignOutAsync(Guid userId);
         Task<ApplicationUser?> FindUserByEmailAsync(string email);
         Task<bool> DeleteUserAsync(Guid userId);

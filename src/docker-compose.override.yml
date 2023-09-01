@@ -1,6 +1,14 @@
 version: '3.4'
 
 services:
+  micro-rabbitmq-management:
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=Admin1234@
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   micro-mongo-discountdb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
@@ -43,4 +51,14 @@ services:
       - "8000:80"
     depends_on:
       - micro-sqlserver
+      - micro-rabbitmq-management
+
+  micro-email-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMqSettings__Host=Server=micro-rabbitmq-management
+    ports:
+      - "8010:80"
+    depends_on:
+      - micro-rabbitmq-management
 

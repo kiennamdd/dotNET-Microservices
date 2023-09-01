@@ -1,6 +1,10 @@
+using AutoMapper;
+using EventBus.Events;
 using FluentValidation;
+using Identity.API.Domain.Entities;
 using Identity.API.Interfaces;
 using Identity.API.Models;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.API.Controllers
@@ -12,14 +16,23 @@ namespace Identity.API.Controllers
         private readonly IIdentityService _identityService;
         private readonly IValidator<RegisterRequest> _registerValidator;
         private readonly IValidator<SignInRequest> _signInValidator;
+        private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         public IdentityController(IIdentityService identityService,
             IValidator<RegisterRequest> registerValidator,
-            IValidator<SignInRequest> signInValidator)
+            IValidator<SignInRequest> signInValidator,
+            IMapper mapper,
+            IPublishEndpoint publishEndpoint)
         {
             _identityService = identityService;    
+
             _registerValidator = registerValidator;
             _signInValidator = signInValidator;
+
+            _mapper = mapper;
+
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpPost]
@@ -34,11 +47,22 @@ namespace Identity.API.Controllers
                 return ResponseDto.Fail("Email already exists.");
             }
 
-            var succeed = await _identityService.CreateUserAsync(registerRequest);
+            var newUser = new ApplicationUser
+            {
+                FullName = registerRequest.FullName,
+                PhoneNumber = registerRequest.PhoneNumber,
+                Email = registerRequest.Email,
+                UserName = registerRequest.Email,
+                EmailConfirmed = false
+            };
+
+            var succeed = await _identityService.CreateUserAsync(newUser, registerRequest.Password);
             if(!succeed)
             {
                 return ResponseDto.Fail("Fail to register user.");
             }
+
+            await _publishEndpoint.Publish(_mapper.Map<UserCreatedEvent>(newUser));
 
             return ResponseDto.Success("User has been registered successfully.");
         }
@@ -49,7 +73,7 @@ namespace Identity.API.Controllers
         {
             await _signInValidator.ValidateAndThrowAsync(signInRequest);
 
-            var accessToken = await _identityService.SignInAsync(signInRequest);
+            var accessToken = await _identityService.SignInAsync(signInRequest.Email, signInRequest.Password);
             if(string.IsNullOrEmpty(accessToken))
             {
                 return ResponseDto.Fail("Wrong email or password.");
@@ -65,7 +89,7 @@ namespace Identity.API.Controllers
 
         [HttpPost]
         [Route("AssignRole/{userId}")]
-        public async Task<ResponseDto> SignIn(string userId, [FromBody] string roleName)
+        public async Task<ResponseDto> AssignRole(string userId, [FromBody] string roleName)
         {
             if(!Guid.TryParse(userId, out Guid guid))
             {

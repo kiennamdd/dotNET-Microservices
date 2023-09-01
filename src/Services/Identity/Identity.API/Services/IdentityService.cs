@@ -41,27 +41,25 @@ namespace Identity.API.Services
             return result.Succeeded;
         }
 
-        public async Task<bool> CreateUserAsync(RegisterRequest registerRequest)
+        public async Task<bool> CreateUserAsync(ApplicationUser user, string password)
         {
-            var user = new ApplicationUser
-            {
-                FullName = registerRequest.FullName,
-                PhoneNumber = registerRequest.PhoneNumber,
-                Email = registerRequest.Email,
-                UserName = registerRequest.Email
-            };
+            if(string.IsNullOrEmpty(password) || user is null)
+                return false;
 
-            var result = await _userManager.CreateAsync(user, registerRequest.Password);
+            var result = await _userManager.CreateAsync(user, password);
             return result.Succeeded;
         }
 
-        public async Task<string> SignInAsync(SignInRequest signInRequest)
+        public async Task<string> SignInAsync(string email, string password)
         {
-            var user = await _userManager.Users.Where(o => o.Email == signInRequest.Email).FirstOrDefaultAsync();
+            if(string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+                return string.Empty;
+
+            var user = await _userManager.Users.Where(o => o.Email == email).FirstOrDefaultAsync();
             if(user is null)
                 return string.Empty;
 
-            var isCorrectPassword = await _userManager.CheckPasswordAsync(user, signInRequest.Password);
+            var isCorrectPassword = await _userManager.CheckPasswordAsync(user, password);
             if(!isCorrectPassword)
                 return string.Empty;
 
