@@ -150,7 +150,7 @@ namespace Catalog.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = Roles.ADMIN)]
-        public async Task<ResponseDto> Post(ProductCreateRequest productCreateRequest)
+        public async Task<ResponseDto> Post([FromForm] ProductCreateRequest productCreateRequest)
         {
             await _productCreateValidator.ValidateAndThrowAsync(productCreateRequest);
 
@@ -414,7 +414,7 @@ namespace Catalog.API.Controllers
         [HttpPost]
         [Route("AddImages")]
         [Authorize(Roles = Roles.ADMIN)]
-        public async Task<ResponseDto> AddImages(ProductImagesAddRequest productImagesAddRequest)
+        public async Task<ResponseDto> AddImages([FromForm] ProductImagesAddRequest productImagesAddRequest)
         {
             if(!Guid.TryParse(productImagesAddRequest.ProductId, out Guid productId))
             {

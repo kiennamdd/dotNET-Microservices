@@ -9,15 +9,23 @@ namespace Email.API.IntegrationEventConsumers
     public class UserCreatedEventConsumer : IConsumer<UserCreatedEvent>
     {
         private readonly IEmailService _emailService;
+        private readonly ILogger<UserCreatedEventConsumer> _logger;
 
-        public UserCreatedEventConsumer(IEmailService emailService)
+        public UserCreatedEventConsumer(IEmailService emailService, ILogger<UserCreatedEventConsumer> logger)
         {
-            _emailService = emailService;    
+            _emailService = emailService;   
+            _logger = logger;
         }
 
         public async Task Consume(ConsumeContext<UserCreatedEvent> context)
         {
-            var userInfo = context.Message;
+            UserCreatedEvent userInfo = context.Message;
+
+            if(string.IsNullOrEmpty(userInfo.Email))
+            {
+                _logger.LogWarning($"User's email is null or empty. User ID: {userInfo.Id}");
+                return;
+            }
 
             var body = new StringBuilder();
             body.AppendLine("<html>");

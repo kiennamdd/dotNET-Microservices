@@ -9,7 +9,7 @@ services:
       - "5672:5672"
       - "15672:15672"
 
-  micro-mongo-discountdb:
+  micro-mongodb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=Admin1234@
@@ -26,17 +26,19 @@ services:
   micro-discount-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__MongoDb=mongodb://admin:Admin1234%40@micro-mongo-discountdb:27017/
+      - ConnectionStrings__MongoDb=mongodb://admin:Admin1234%40@micro-mongodb:27017/
+      - RabbitMqSettings__Host=micro-rabbitmq-management
     ports:
       - "8001:80"
     depends_on:
-      - micro-mongo-discountdb
+      - micro-mongodb
 
   micro-catalog-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=Server=micro-sqlserver,1433;Database=Catalogdb;User ID=SA;Password=Admin1234@
       - ServiceApiUrls__DiscountApi=http://micro-discount-api:80
+      - RabbitMqSettings__Host=micro-rabbitmq-management
     ports:
       - "8002:80"
     depends_on:
@@ -47,6 +49,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=Server=micro-sqlserver,1433;Database=IdentityDb;User ID=SA;Password=Admin1234@
+      - RabbitMqSettings__Host=micro-rabbitmq-management
     ports:
       - "8000:80"
     depends_on:
@@ -56,7 +59,7 @@ services:
   micro-email-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - RabbitMqSettings__Host=Server=micro-rabbitmq-management
+      - RabbitMqSettings__Host=micro-rabbitmq-management
     ports:
       - "8010:80"
     depends_on:

@@ -7,9 +7,9 @@ services:
     image: rabbitmq:management
     container_name: micro-rabbitmq-management
 
-  micro-mongo-discountdb:
+  micro-mongodb:
     image: mongo
-    container_name: micro-mongo-discountdb
+    container_name: micro-mongodb
 
   micro-sqlserver:
     image: mcr.microsoft.com/mssql/server

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Discount.API.Domain.Entities;
 using Discount.API.Models;
+using EventBus.Events;
 
 namespace Discount.API.Mappings
 {
@@ -9,6 +10,7 @@ namespace Discount.API.Mappings
         public MappingProfile()
         {
             CreateMap<Coupon, CouponDto>().ReverseMap();
+            CreateMap<Coupon, CouponDeletedEvent>();
             CreateMap<CouponCreateRequest, Coupon>();
         }
     }

@@ -15,6 +15,8 @@ using Catalog.API.Domain.Constants;
 using Catalog.API.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using MassTransit;
+using Catalog.API.EventConsumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +78,31 @@ builder.Services.AddSwaggerGen(options =>
                 }
             }, new string[]{}
         }
+    });
+});
+
+builder.Services.AddMassTransit(massTransitConfig => 
+{
+    massTransitConfig.AddConsumer<CouponDeletedEventConsumer>();
+
+    massTransitConfig.UsingRabbitMq((context, rabbitmqConfig) => 
+    {
+        var rabbitMqSettings = builder.Configuration.GetSection("RabbitMqSettings");
+        string host = rabbitMqSettings.GetValue<string>("Host") ?? "";
+        ushort port = rabbitMqSettings.GetValue<ushort>("Port");
+        string user = rabbitMqSettings.GetValue<string>("User") ?? "";
+        string password = rabbitMqSettings.GetValue<string>("Password") ?? "";
+
+        rabbitmqConfig.Host(host: host, port: port, virtualHost: "/", hostConfig => 
+        {
+            hostConfig.Username(user);
+            hostConfig.Password(password);
+        });
+
+        rabbitmqConfig.ReceiveEndpoint("coupon-deleted-event-queue", endpoint => 
+        {
+            endpoint.ConfigureConsumer<CouponDeletedEventConsumer>(context);
+        });
     });
 });
 

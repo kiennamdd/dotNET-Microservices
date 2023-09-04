@@ -3,9 +3,10 @@ using Discount.API.Domain.Constants;
 using Discount.API.Domain.Entities;
 using Discount.API.Interfaces;
 using Discount.API.Models;
+using EventBus.Events;
 using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -19,16 +20,19 @@ namespace Discount.API.Controllers
         private readonly IMapper _mapper;
         private readonly IStripeService _stripeService;
         private readonly IValidator<CouponCreateRequest> _couponCreateValidator;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         public DiscountController(ICouponRepository couponRepository, 
             IMapper mapper,
             IStripeService stripeService,
-            IValidator<CouponCreateRequest> couponCreateValidator)
+            IValidator<CouponCreateRequest> couponCreateValidator,
+            IPublishEndpoint publishEndpoint)
         {
             _couponRepository = couponRepository;
             _mapper = mapper;
             _stripeService = stripeService;
             _couponCreateValidator = couponCreateValidator;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
@@ -123,6 +127,8 @@ namespace Discount.API.Controllers
             {
                 return ResponseDto.Fail("Fail to delete coupon in database");
             }
+
+            await _publishEndpoint.Publish(_mapper.Map<CouponDeletedEvent>(existedCoupon));
 
             return ResponseDto.Success("Coupon deleted successfully.");
         }

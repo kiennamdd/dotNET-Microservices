@@ -6,6 +6,7 @@ using Discount.API.Repositories;
 using Discount.API.Services;
 using Discount.API.Validators;
 using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Stripe;
@@ -60,6 +61,24 @@ builder.Services.AddAppAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+builder.Services.AddMassTransit(massTransitConfig => 
+{
+    massTransitConfig.UsingRabbitMq((context, rabbitmqConfig) => 
+    {
+        var rabbitMqSettings = builder.Configuration.GetSection("RabbitMqSettings");
+        string host = rabbitMqSettings.GetValue<string>("Host") ?? "";
+        ushort port = rabbitMqSettings.GetValue<ushort>("Port");
+        string user = rabbitMqSettings.GetValue<string>("User") ?? "";
+        string password = rabbitMqSettings.GetValue<string>("Password") ?? "";
+
+        rabbitmqConfig.Host(host: host, port: port, virtualHost: "/", hostConfig => 
+        {
+            hostConfig.Username(user);
+            hostConfig.Password(password);
+        });
+    });
+});
 
 var app = builder.Build();
 
