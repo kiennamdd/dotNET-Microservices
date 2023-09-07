@@ -82,12 +82,32 @@
             }
         },
         {
+            "name": "Cart.API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Services/Cart/Cart.API/bin/Debug/net6.0/Cart.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Services/Cart/Cart.API",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
             "name": "Docker .NET Launch",
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Email/Email.API/Email.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Cart/Cart.API/Cart.API.csproj"
             }
         }
     ],
@@ -95,10 +115,11 @@
         {
             "name": "Multiple Projects",
             "configurations": [
-                //"Catalog.API",
-                //"Discount.API",
+                "Catalog.API",
+                "Discount.API",
                 "Identity.API",
-                "Email.API"
+                "Email.API",
+                "Cart.API"
             ]
         }
     ]

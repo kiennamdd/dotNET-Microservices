@@ -32,9 +32,9 @@ namespace Discount.API.Validators
             RuleFor(o => o.MaxDiscountAmount).GreaterThanOrEqualTo(0).WithMessage("{MaxDiscountAmount} must greater than or equal 0.");
 
             RuleFor(o => new { o.DiscountAmount, o.DiscountPercent })
-                .Must(obj => (obj.DiscountPercent > 0 || obj.DiscountAmount > 0))
-                .WithName(obj => nameof(obj.DiscountAmount))
-                .WithMessage("{DiscountAmount} must greater than 0 if {DiscountPercent} is not assigned.");
+                .Must(obj => obj.DiscountPercent > 0 ^ obj.DiscountAmount > 0)
+                .WithName(obj => nameof(obj.DiscountAmount) + " & " + nameof(obj.DiscountPercent))
+                .WithMessage("One of {DiscountAmount} or {DiscountPercent} must be assigned value. Not allow both.");
         }
 
         private bool IsNotDuplicateCode(string code)

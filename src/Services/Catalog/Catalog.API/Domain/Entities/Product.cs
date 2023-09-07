@@ -12,7 +12,7 @@ namespace Catalog.API.Domain.Entities
         
         public string AppliedCouponCode { get; set; } = string.Empty;
         public double DiscountAmount { get;set; }
-        public double DiscountPercent { get;set; }
+        public int DiscountPercent { get;set; }
 
         public string ThumbnailUrl { get; set; } = string.Empty;
         public string ThumbnailLocalPath { get; set; } = string.Empty;

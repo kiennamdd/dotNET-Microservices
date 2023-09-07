@@ -1,5 +1,5 @@
 
-namespace Catalog.API.Models
+namespace Cart.API.Models
 {
     public class ProductDto
     {
@@ -18,7 +18,5 @@ namespace Catalog.API.Models
 
         public string CategoryName { get; set; } = string.Empty;
         public string BrandName { get; set; } = string.Empty;
-
-        public IEnumerable<ProductImageDto>? ProductImages { get; set; } = null;
     }
 }

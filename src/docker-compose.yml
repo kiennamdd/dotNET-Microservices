@@ -15,6 +15,10 @@ services:
     image: mcr.microsoft.com/mssql/server
     container_name: micro-sqlserver
 
+  micro-postgres:
+    image: postgres
+    container_name: micro-postgres
+
   micro-discount-api:
     image: micro-discount-api
     container_name: micro-discount-api
@@ -43,3 +47,9 @@ services:
       context: .
       dockerfile: Services\Email\Email.API\Dockerfile
 
+  micro-cart-api:
+    image: micro-cart-api
+    container_name: micro-cart-api
+    build: 
+      context: .
+      dockerfile: Services\Cart\Cart.API\Dockerfile

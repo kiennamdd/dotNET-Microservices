@@ -1,9 +1,9 @@
 
-namespace EventBus.Events
+namespace Cart.API.Models
 {
-    public class CouponDeletedEvent: IntegrationEventBase
+    public class CouponDto
     {
-        public string CouponId { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string CouponCode { get; set; } = string.Empty;
         public double MinOrderTotal { get; set; }
         public int DiscountPercent { get; set; }

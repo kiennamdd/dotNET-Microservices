@@ -4,7 +4,9 @@ using Catalog.API.Domain.Entities;
 using Catalog.API.Interfaces;
 using Catalog.API.Interfaces.Infrastructure;
 using Catalog.API.Models;
+using EventBus.Events;
 using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PagedList;
@@ -27,6 +29,7 @@ namespace Catalog.API.Controllers
         private readonly IValidator<ProductUpdateRequest> _productUpdateValidator;
         private readonly IValidator<ProductImagesAddRequest> _productImagesAddValidator;
         private readonly IValidator<ProductImagesDeleteRequest> _productImagesDeleteValidator;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         public ProductController(IMapper mapper,
             IProductRepository productRepository, 
@@ -39,7 +42,8 @@ namespace Catalog.API.Controllers
             IValidator<ProductCreateRequest> productCreateValidator,
             IValidator<ProductUpdateRequest> productUpdateValidator,
             IValidator<ProductImagesAddRequest> productImagesAddValidator,
-            IValidator<ProductImagesDeleteRequest> productImagesDeleteValidator)
+            IValidator<ProductImagesDeleteRequest> productImagesDeleteValidator,
+            IPublishEndpoint publishEndpoint)
         {
             _mapper = mapper;
 
@@ -56,6 +60,8 @@ namespace Catalog.API.Controllers
             _productUpdateValidator = productUpdateValidator;
             _productImagesAddValidator = productImagesAddValidator;
             _productImagesDeleteValidator = productImagesDeleteValidator;
+
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
@@ -243,6 +249,11 @@ namespace Catalog.API.Controllers
             _productRepository.Update(product);
             await _unitOfWork.SaveChangesAsync();
 
+            //  If product is changed to status "deleted" successfully, publish integration event
+            await _publishEndpoint.Publish(new ProductDeletedEvent{
+                ProductId = productId
+            });
+
             return ResponseDto.Success("Product deleted successfully.");
         }
 
@@ -305,6 +316,8 @@ namespace Catalog.API.Controllers
             }
             
             string newCouponCode = productUpdateRequest.AppliedCouponCode.Trim();
+            ProductCouponCodeChangedEvent? productCouponCodeChangeEvent = null;
+
             if(!product.AppliedCouponCode.Equals(newCouponCode, StringComparison.InvariantCultureIgnoreCase))
             {
                 if(string.IsNullOrEmpty(newCouponCode))
@@ -312,6 +325,11 @@ namespace Catalog.API.Controllers
                     product.AppliedCouponCode = string.Empty;
                     product.DiscountAmount = 0;
                     product.DiscountPercent = 0;
+
+                    productCouponCodeChangeEvent = new ProductCouponCodeChangedEvent{
+                        ProductId = product.Id,
+                        AppliedCouponCode = string.Empty
+                    };
                 }
                 else
                 {
@@ -321,6 +339,13 @@ namespace Catalog.API.Controllers
                         product.AppliedCouponCode = newCouponCode;
                         product.DiscountAmount = couponDto.DiscountAmount;
                         product.DiscountPercent = couponDto.DiscountPercent;
+
+                        productCouponCodeChangeEvent = new ProductCouponCodeChangedEvent{
+                            ProductId = product.Id,
+                            AppliedCouponCode = product.AppliedCouponCode,
+                            DiscountAmount = product.DiscountAmount,
+                            DiscountPercent = product.DiscountPercent
+                        };
                     }
                 }
             }
@@ -361,6 +386,12 @@ namespace Catalog.API.Controllers
 
             _productRepository.Update(product);
             await _unitOfWork.SaveChangesAsync();
+
+            // If product is updated successfully and the applied coupon has been changed, publish integration event
+            if(productCouponCodeChangeEvent != null)
+            {
+                await _publishEndpoint.Publish(productCouponCodeChangeEvent);
+            }
 
             return ResponseDto.Success("Product updated successfully!");
         }

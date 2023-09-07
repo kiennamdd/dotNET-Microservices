@@ -27,7 +27,7 @@ namespace Catalog.API.EventConsumers
 
             if(string.IsNullOrEmpty(coupon.CouponCode))
             {
-                _logger.LogWarning($"Coupon code is null or empty. Coupon ID: {coupon.Id}");
+                _logger.LogWarning($"Coupon code is null or empty. Coupon ID: {coupon.CouponId}");
                 return;
             }
 

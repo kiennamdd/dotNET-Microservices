@@ -23,6 +23,13 @@ services:
     ports:
       - "1433:1433"
 
+  micro-postgres:
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Admin1234@
+    ports:
+      - "5432:5432"
+
   micro-discount-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -61,7 +68,19 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - RabbitMqSettings__Host=micro-rabbitmq-management
     ports:
-      - "8010:80"
+      - "8005:80"
+    depends_on:
+      - micro-rabbitmq-management
+
+  micro-cart-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Postgres=Host=micro-postgres,5432;Database=CartDb;Username=admin;Password=Admin1234@
+      - RabbitMqSettings__Host=micro-rabbitmq-management
+      - ApiServiceBaseUrls__DiscountApi=http://micro-discount-api:80
+      - ApiServiceBaseUrls__CatalogApi=http://micro-catalog-api:80
+    ports:
+      - "8003:80"
     depends_on:
       - micro-rabbitmq-management
 
