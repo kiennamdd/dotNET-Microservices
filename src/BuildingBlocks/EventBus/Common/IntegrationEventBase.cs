@@ -1,5 +1,5 @@
 
-namespace EventBus.Events
+namespace EventBus.Common
 {
     public class IntegrationEventBase
     {

@@ -1,4 +1,6 @@
 
+using EventBus.Common;
+
 namespace EventBus.Events
 {
     public class CouponDeletedEvent: IntegrationEventBase
