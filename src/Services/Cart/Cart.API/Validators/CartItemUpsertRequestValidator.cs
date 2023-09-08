@@ -8,7 +8,11 @@ namespace Cart.API.Validators
     {
         public CartItemUpsertRequestValidator()
         {
+            RuleFor(o => o.ProductId)
+                .NotEmpty();
+
             RuleFor(o => o.Quantity)
+                .NotEmpty()
                 .Must(quantity => quantity > 0)
                 .WithMessage("'Quantity' must be greater 0.");
         }

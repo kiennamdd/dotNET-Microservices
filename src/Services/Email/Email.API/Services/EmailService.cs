@@ -36,7 +36,13 @@ namespace Email.API.Services
 
                 emailMessage.Subject = mailData.Subject;
 
-                var bodyBuilder = new BodyBuilder(){ TextBody = mailData.Body };
+                var bodyBuilder = new BodyBuilder();
+
+                if(mailData.IsHtmlBody)
+                    bodyBuilder.HtmlBody = mailData.Body;
+                else
+                    bodyBuilder.TextBody = mailData.Body;
+
                 emailMessage.Body = bodyBuilder.ToMessageBody();
 
                 using var client = new SmtpClient();

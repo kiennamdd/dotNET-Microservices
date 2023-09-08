@@ -99,7 +99,7 @@ builder.Services.AddMassTransit(massTransitConfig =>
             hostConfig.Password(password);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("coupon-deleted-event-queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CatalogAPI_CouponDeletedEvent_Queue", endpoint => 
         {
             endpoint.ConfigureConsumer<CouponDeletedEventConsumer>(context);
         });

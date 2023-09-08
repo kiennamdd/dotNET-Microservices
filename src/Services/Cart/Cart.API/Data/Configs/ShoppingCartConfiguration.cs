@@ -9,7 +9,7 @@ namespace Cart.API.Data.Configs
     {
         public void Configure(EntityTypeBuilder<ShoppingCart> builder)
         {
-            builder.Property(o => o.UserId).IsRequired();
+            builder.Property(o => o.Id).IsRequired();
         }
     }
 }

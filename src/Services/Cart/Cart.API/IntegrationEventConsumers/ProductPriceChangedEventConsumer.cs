@@ -35,6 +35,7 @@ namespace Cart.API.IntegrationEventConsumers
                 {
                     cartItem.ProductOriginalPrice = changeEvent.Price;
                     cartItem.ProductLastPrice = changeEvent.Price;
+                    cartItem.ProductAppliedCouponCode = string.Empty;
                     _cartItemRepository.Update(cartItem);
                 }
             }
@@ -50,6 +51,7 @@ namespace Cart.API.IntegrationEventConsumers
                 {
                     cartItem.ProductOriginalPrice = changeEvent.Price;
                     cartItem.ProductLastPrice = newLastPrice;
+                    cartItem.ProductAppliedCouponCode = changeEvent.AppliedCouponCode;
                     _cartItemRepository.Update(cartItem);
                 }
             }

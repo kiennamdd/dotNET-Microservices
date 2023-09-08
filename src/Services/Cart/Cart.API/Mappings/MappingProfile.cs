@@ -8,7 +8,10 @@ namespace Cart.API.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<ShoppingCart, ShoppingCartDto>();
+            CreateMap<ShoppingCart, ShoppingCartDto>()
+                .ForMember(o => o.UserId, o => o.MapFrom(o => o.Id));
+
+            CreateMap<CartItem, CartItemDto>();
         }
     }
 }

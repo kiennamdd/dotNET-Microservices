@@ -11,7 +11,8 @@ namespace Email.API.IntegrationEventConsumers
         private readonly IEmailService _emailService;
         private readonly ILogger<UserCreatedEventConsumer> _logger;
 
-        public UserCreatedEventConsumer(IEmailService emailService, ILogger<UserCreatedEventConsumer> logger)
+        public UserCreatedEventConsumer(IEmailService emailService, 
+            ILogger<UserCreatedEventConsumer> logger)
         {
             _emailService = emailService;   
             _logger = logger;
@@ -34,7 +35,7 @@ namespace Email.API.IntegrationEventConsumers
             body.AppendLine("<br/>");
             body.AppendLine("<p>You can now place order on website.</p>");
             body.AppendLine("<br/>");
-            body.AppendLine($"<button style=\"background-color: red;\"><a style=\"color: white;\" href=\"http://localhost:5059\">Shop NOW!</a></button>");
+            body.AppendLine($"<button style=\"background-color: red;\"><a style=\"color: white;\" href=\"http://localhost:8005\">Shop NOW!</a></button>");
             body.AppendLine("</body>");
             body.AppendLine("</html>");
 
@@ -43,7 +44,7 @@ namespace Email.API.IntegrationEventConsumers
                 userInfo.Email
             };
 
-            var mailData = new MailData(to, "User Registration Successfully!", body.ToString());
+            var mailData = new MailData(to, "User Registration Successfully!", body.ToString(), true);
             await _emailService.SendAsync(mailData);
         }
     }

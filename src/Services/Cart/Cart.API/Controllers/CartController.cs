@@ -1,11 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using Cart.API.Domain.Constants;
 using Cart.API.Domain.Entities;
 using Cart.API.Interfaces;
 using Cart.API.Interfaces.Infrastructure;
 using Cart.API.Models;
-using Cart.API.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +12,7 @@ namespace Cart.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class CartController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -57,7 +55,7 @@ namespace Cart.API.Controllers
         {
             if(!_currentUser.IsMatchCurrentUserId(userId, out Guid parsedUserId) && !_currentUser.IsInRole(Roles.ADMIN))
             {
-                return ResponseDto.Fail();
+                return ResponseDto.Fail("Invalid user identifier.");
             }
 
             if(parsedUserId == Guid.Empty)
@@ -66,7 +64,7 @@ namespace Cart.API.Controllers
                 return ResponseDto.Fail("Can not retrieve user identifier.");
             }
 
-            IEnumerable<ShoppingCart> list = await _shoppingCartRepository.GetListAsync(predicate: o=>o.Id.Equals(userId), 
+            IEnumerable<ShoppingCart> list = await _shoppingCartRepository.GetListAsync(predicate: o=>o.Id.Equals(parsedUserId), 
                                                                                     includeProperties: nameof(ShoppingCart.Items));
 
             ShoppingCart shoppingCart = list.FirstOrDefault() ?? new ShoppingCart(parsedUserId);

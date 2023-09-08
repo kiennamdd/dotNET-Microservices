@@ -342,6 +342,7 @@ namespace Catalog.API.Controllers
 
                         productCouponCodeChangeEvent = new ProductCouponCodeChangedEvent{
                             ProductId = product.Id,
+                            Price = product.Price,
                             AppliedCouponCode = product.AppliedCouponCode,
                             DiscountAmount = product.DiscountAmount,
                             DiscountPercent = product.DiscountPercent
@@ -379,6 +380,8 @@ namespace Catalog.API.Controllers
                 product.CategoryId = category.Id;
             }
 
+            bool isPriceChanged = product.Price != productUpdateRequest.Price;
+
             product.Name = productUpdateRequest.Name;
             product.Price = productUpdateRequest.Price;
             product.Description = productUpdateRequest.Description;
@@ -387,8 +390,13 @@ namespace Catalog.API.Controllers
             _productRepository.Update(product);
             await _unitOfWork.SaveChangesAsync();
 
-            // If product is updated successfully and the applied coupon has been changed, publish integration event
-            if(productCouponCodeChangeEvent != null)
+            // If product's price is changed, publish integration event
+            if(isPriceChanged)
+            {
+                await _publishEndpoint.Publish(_mapper.Map<ProductPriceChangedEvent>(product));
+            }
+            // If product's applied coupon has been changed, publish integration event
+            else if(productCouponCodeChangeEvent != null)
             {
                 await _publishEndpoint.Publish(productCouponCodeChangeEvent);
             }

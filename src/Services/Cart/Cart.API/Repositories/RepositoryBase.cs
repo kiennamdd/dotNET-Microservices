@@ -67,7 +67,7 @@ namespace Cart.API.Repositories
                 string[] props = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach(string prop in props)
                 {
-                    query.Include(prop);
+                    query = query.Include(prop);
                 }
             }
 

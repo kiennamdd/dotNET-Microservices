@@ -76,6 +76,7 @@ builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<ICatalogService, CatalogService>();
 
@@ -99,17 +100,17 @@ builder.Services.AddMassTransit(massTransitConfig =>
             hostConfig.Password(password);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("coupon-deleted-event-queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_CouponDeletedEvent_Queue", endpoint => 
         {
             endpoint.ConfigureConsumer<CouponDeletedEventConsumer>(context);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("product-coupon-code-changed-event-queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductCouponCodeChangedEvent_Queue", endpoint => 
         {
             endpoint.ConfigureConsumer<ProductCouponCodeChangedEventConsumer>(context);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("product-price-changed-event-queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductPriceChangedEvent_Queue", endpoint => 
         {
             endpoint.ConfigureConsumer<ProductPriceChangedEventConsumer>(context);
         });

@@ -19,7 +19,7 @@ namespace Cart.API.Services
             if(_user is null)
                 return Guid.Empty;
 
-            string? userId = _user.Claims.FirstOrDefault(o => o.Type == JwtRegisteredClaimNames.Sub)?.Value;
+            string? userId = _user.Claims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if(Guid.TryParse(userId, out Guid result))
             {
@@ -45,12 +45,16 @@ namespace Cart.API.Services
             if(!Guid.TryParse(userIdToCheck, out Guid guid))
                 return false;
 
-            Guid currentUserId = GetUserId();
-
-            if(currentUserId != Guid.Empty && currentUserId != guid)
+            if(guid == Guid.Empty)
                 return false;
 
+            // If parsed guid if not empty, set out value
             userIdResult = guid;
+
+            Guid currentUserId = GetUserId();
+            if(currentUserId == Guid.Empty || currentUserId != guid)
+                return false;
+
             return true;
         }
     }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Catalog.API.Domain.Entities;
 using Catalog.API.Models;
+using EventBus.Events;
 
 namespace Catalog.API.Mapping
 {
@@ -19,6 +20,9 @@ namespace Catalog.API.Mapping
             CreateMap<Brand, BrandDto>();
 
             CreateMap<Category, CategoryDto>();
+
+            CreateMap<Product, ProductPriceChangedEvent>()
+                .ForMember(o => o.ProductId, o => o.MapFrom(o => o.Id));
         }
     }
 }

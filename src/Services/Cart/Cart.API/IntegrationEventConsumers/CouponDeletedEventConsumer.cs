@@ -36,6 +36,7 @@ namespace Cart.API.IntegrationEventConsumers
             foreach(var cartItem in list)
             {
                 cartItem.ProductLastPrice = cartItem.ProductOriginalPrice;
+                cartItem.ProductAppliedCouponCode = string.Empty;
                 _cartItemRepository.Update(cartItem);
             }
 

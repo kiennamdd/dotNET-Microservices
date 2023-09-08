@@ -128,7 +128,16 @@ namespace Discount.API.Controllers
                 return ResponseDto.Fail("Fail to delete coupon in database");
             }
 
-            await _publishEndpoint.Publish(_mapper.Map<CouponDeletedEvent>(existedCoupon));
+            // Note: can not use automapper for mapping from Coupon to CouponDeletedEvent
+            await _publishEndpoint.Publish(new CouponDeletedEvent{
+                CouponId = existedCoupon.Id,
+                CouponCode = existedCoupon.CouponCode,
+                MinOrderTotal = existedCoupon.MinOrderTotal,
+                DiscountPercent = existedCoupon.DiscountPercent,
+                DiscountAmount = existedCoupon.DiscountAmount,
+                MaxDiscountAmount = existedCoupon.MaxDiscountAmount,
+                ExpiredDate = existedCoupon.ExpiredDate
+            });
 
             return ResponseDto.Success("Coupon deleted successfully.");
         }
