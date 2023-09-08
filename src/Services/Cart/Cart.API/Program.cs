@@ -85,6 +85,7 @@ builder.Services.AddMassTransit(massTransitConfig =>
     massTransitConfig.AddConsumer<CouponDeletedEventConsumer>();
     massTransitConfig.AddConsumer<ProductCouponCodeChangedEventConsumer>();
     massTransitConfig.AddConsumer<ProductPriceChangedEventConsumer>();
+    massTransitConfig.AddConsumer<ProductDeletedEventConsumer>();
 
     massTransitConfig.UsingRabbitMq((context, rabbitmqConfig) => 
     {
@@ -113,6 +114,11 @@ builder.Services.AddMassTransit(massTransitConfig =>
         rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductPriceChangedEvent_Queue", endpoint => 
         {
             endpoint.ConfigureConsumer<ProductPriceChangedEventConsumer>(context);
+        });
+
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductDeletedEvent_Queue", endpoint => 
+        {
+            endpoint.ConfigureConsumer<ProductDeletedEventConsumer>(context);
         });
     });
 });
