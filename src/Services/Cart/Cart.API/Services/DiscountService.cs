@@ -20,7 +20,7 @@ namespace Cart.API.Services
         {
             try
             {
-                HttpClient client = _httpClientFactory.CreateClient(ApiServiceNames.CatalogApi);
+                HttpClient client = _httpClientFactory.CreateClient(ApiServiceNames.DiscountApi);
 
                 HttpResponseMessage responseMessage = await client.GetAsync($"/api/discount/coupons/withcode/{couponCode}");
         
