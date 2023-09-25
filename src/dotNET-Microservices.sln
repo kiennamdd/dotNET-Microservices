@@ -51,6 +51,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Email", "Email", "{49913358
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email.API", "Services\Email\Email.API\Email.API.csproj", "{BEB1245C-3148-4410-8A94-704DD5518250}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotApiGateway", "ApiGateways\OcelotApiGateway\OcelotApiGateway.csproj", "{4D6D12C9-7824-4BA3-B5C1-A2ABAFDC98A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{BEB1245C-3148-4410-8A94-704DD5518250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEB1245C-3148-4410-8A94-704DD5518250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEB1245C-3148-4410-8A94-704DD5518250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D6D12C9-7824-4BA3-B5C1-A2ABAFDC98A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D6D12C9-7824-4BA3-B5C1-A2ABAFDC98A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D6D12C9-7824-4BA3-B5C1-A2ABAFDC98A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D6D12C9-7824-4BA3-B5C1-A2ABAFDC98A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +139,7 @@ Global
 		{9386592B-0983-403B-8DCD-05F233474ADA} = {CA658618-4A8D-4B4E-AFCD-5DFF2B67C396}
 		{49913358-6AD3-4A83-8B28-A6CAF94F20D8} = {26CC5B4B-964F-45F0-99B3-C199B11041C1}
 		{BEB1245C-3148-4410-8A94-704DD5518250} = {49913358-6AD3-4A83-8B28-A6CAF94F20D8}
+		{4D6D12C9-7824-4BA3-B5C1-A2ABAFDC98A1} = {4508A801-DA3B-4BC5-95D3-399BF0F7A862}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F806A11-86F5-4307-9D8E-9E0E8B38914B}
