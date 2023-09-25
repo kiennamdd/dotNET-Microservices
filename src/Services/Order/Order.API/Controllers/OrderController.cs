@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,18 +23,21 @@ namespace Order.API.Controllers
         private readonly ICartService _cartService;
         private readonly ICurrentUser _currentUser;
         private readonly ILogger<OrderController> _logger;
+        private readonly IValidator<CheckoutRequest> _checkoutRequestValidator;
 
         public OrderController(IMediator mediator, 
             IStripeService stripeService, 
             ICartService cartService,
             ICurrentUser currentUser, 
-            ILogger<OrderController> logger)
+            ILogger<OrderController> logger,
+            IValidator<CheckoutRequest> checkoutRequestValidator)
         {
             _mediator = mediator;
             _stripeService = stripeService;
             _cartService = cartService;
             _currentUser = currentUser;
             _logger = logger;
+            _checkoutRequestValidator = checkoutRequestValidator;
         }
 
         private async Task<CustomerOrder?> GetOrderOfCurrentUserByIdAsync(string orderId, string includeProperties = "")
@@ -103,6 +107,8 @@ namespace Order.API.Controllers
         [Route("checkout")]
         public async Task<ResponseDto> Checkout([FromBody] CheckoutRequest checkoutRequest)
         {
+            await _checkoutRequestValidator.ValidateAndThrowAsync(checkoutRequest);
+
             CustomerOrder? order = await GetOrderOfCurrentUserByIdAsync(checkoutRequest.OrderId, nameof(CustomerOrder.Items));
             if(order is null)
             {
@@ -233,6 +239,7 @@ namespace Order.API.Controllers
 
         [HttpPost]
         [Route("mark-as-shipped/{orderId}")]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> SetShippedOrderStatus(string orderId)
         {
             CustomerOrder? order = await GetOrderOfCurrentUserByIdAsync(orderId);

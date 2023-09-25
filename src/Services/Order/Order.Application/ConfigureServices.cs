@@ -18,6 +18,7 @@ namespace Order.Application
             {
                 config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
                 config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+                config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
 
             services.AddMassTransit(massTransitConfig => 

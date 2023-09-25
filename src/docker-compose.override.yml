@@ -83,6 +83,7 @@ services:
       - "8003:80"
     depends_on:
       - micro-rabbitmq-management
+      - micro-postgres
 
   micro-order-api:
     environment:
@@ -91,7 +92,8 @@ services:
       - RabbitMqSettings__Host=micro-rabbitmq-management
       - ApiServiceBaseUrls__CartApi=http://micro-cart-api:80
     ports:
-      - "8003:80"
+      - "8004:80"
     depends_on:
       - micro-rabbitmq-management
+      - micro-postgres
 

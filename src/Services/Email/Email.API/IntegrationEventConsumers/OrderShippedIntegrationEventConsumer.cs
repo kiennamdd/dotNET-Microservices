@@ -40,7 +40,7 @@ namespace Email.API.IntegrationEventConsumers
                 message.UserEmail
             };
 
-            var mailData = new MailData(to, "Order Cancelled Successfully!", body.ToString(), true);
+            var mailData = new MailData(to, "Order Shipped Successfully!", body.ToString(), true);
             await _emailService.SendAsync(mailData);
         }
     }

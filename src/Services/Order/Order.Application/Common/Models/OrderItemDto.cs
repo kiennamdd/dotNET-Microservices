@@ -24,7 +24,7 @@ namespace Order.Application.Common.Models
                 ProductName = cartItem.ProductName, 
                 ProductOriginalPrice = cartItem.ProductOriginalPrice,
                 ProductLastPrice = cartItem.ProductLastPrice, 
-                ProductThumbnailUrl = "ProductThumbnailUrl"
+                ProductThumbnailUrl = cartItem.ProductThumbnailUrl
             };
         }
 

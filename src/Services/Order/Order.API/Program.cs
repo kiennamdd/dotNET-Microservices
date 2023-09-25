@@ -54,7 +54,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpClientHandlingAuthentication>();
 builder.Services.AddHttpClient(ApiServiceNames.CartApi, config => 
 {
-    config.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceApiUrls:CartApi"));
+    config.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ApiServiceBaseUrls:CartApi"));
 }).AddHttpMessageHandler(s => s.GetRequiredService<HttpClientHandlingAuthentication>());
 
 var app = builder.Build();
