@@ -21,7 +21,7 @@ namespace Catalog.API.Mapping
 
             CreateMap<Category, CategoryDto>();
 
-            CreateMap<Product, ProductPriceChangedEvent>()
+            CreateMap<Product, ProductPriceChangedIntegrationEvent>()
                 .ForMember(o => o.ProductId, o => o.MapFrom(o => o.Id));
         }
     }

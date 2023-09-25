@@ -6,7 +6,7 @@ using MassTransit;
 
 namespace Catalog.API.EventConsumers
 {
-    public class CouponDeletedEventConsumer : IConsumer<CouponDeletedEvent>
+    public class CouponDeletedEventConsumer : IConsumer<CouponDeletedIntegrationEvent>
     {
         private readonly IProductRepository _productRepository;
         private readonly ILogger<CouponDeletedEventConsumer> _logger;
@@ -21,9 +21,9 @@ namespace Catalog.API.EventConsumers
             _logger = logger;
         }
 
-        public async Task Consume(ConsumeContext<CouponDeletedEvent> context)
+        public async Task Consume(ConsumeContext<CouponDeletedIntegrationEvent> context)
         {
-            CouponDeletedEvent coupon = context.Message;
+            CouponDeletedIntegrationEvent coupon = context.Message;
 
             if(string.IsNullOrEmpty(coupon.CouponCode))
             {

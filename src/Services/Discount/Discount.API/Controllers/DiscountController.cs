@@ -129,7 +129,7 @@ namespace Discount.API.Controllers
             }
 
             // Note: can not use automapper for mapping from Coupon to CouponDeletedEvent
-            await _publishEndpoint.Publish(new CouponDeletedEvent{
+            await _publishEndpoint.Publish(new CouponDeletedIntegrationEvent{
                 CouponId = existedCoupon.Id,
                 CouponCode = existedCoupon.CouponCode,
                 MinOrderTotal = existedCoupon.MinOrderTotal,

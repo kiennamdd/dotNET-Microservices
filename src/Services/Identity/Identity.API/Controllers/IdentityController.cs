@@ -62,7 +62,7 @@ namespace Identity.API.Controllers
                 return ResponseDto.Fail("Fail to register user.");
             }
 
-            await _publishEndpoint.Publish(_mapper.Map<UserCreatedEvent>(newUser));
+            await _publishEndpoint.Publish(_mapper.Map<UserCreatedIntegrationEvent>(newUser));
 
             return ResponseDto.Success("User has been registered successfully.");
         }

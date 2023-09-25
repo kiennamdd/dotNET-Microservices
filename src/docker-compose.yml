@@ -53,3 +53,10 @@ services:
     build: 
       context: .
       dockerfile: Services\Cart\Cart.API\Dockerfile
+
+  micro-order-api:
+    image: micro-order-api
+    container_name: micro-order-api
+    build: 
+      context: .
+      dockerfile: Services\Order\Order.API\Dockerfile

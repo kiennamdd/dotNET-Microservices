@@ -46,12 +46,12 @@
             "dockerBuild": {
                 "tag": "src:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/Services/Cart/Cart.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Cart/Cart.API/Cart.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
             }
         },
         {
@@ -62,7 +62,7 @@
             ],
             "dockerBuild": {
                 "tag": "src:latest",
-                "dockerfile": "${workspaceFolder}/Services/Cart/Cart.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
                 "context": "${workspaceFolder}",
                 "platform": {
                     "os": "linux",
@@ -71,7 +71,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Cart/Cart.API/Cart.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
             }
         },
         {
@@ -82,7 +82,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Cart/Cart.API/Cart.API.csproj",
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj",
                 "enableDebugging": true,
                 "configureSsl": false
             }
@@ -95,7 +95,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Cart/Cart.API/Cart.API.csproj"
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
             }
         }
     ]

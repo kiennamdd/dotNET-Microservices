@@ -8,7 +8,7 @@ namespace Identity.API.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<ApplicationUser, UserCreatedEvent>();
+            CreateMap<ApplicationUser, UserCreatedIntegrationEvent>();
         }
     }
 }

@@ -250,7 +250,7 @@ namespace Catalog.API.Controllers
             await _unitOfWork.SaveChangesAsync();
 
             //  If product is changed to status "deleted" successfully, publish integration event
-            await _publishEndpoint.Publish(new ProductDeletedEvent{
+            await _publishEndpoint.Publish(new ProductDeletedIntegrationEvent{
                 ProductId = productId
             });
 
@@ -316,7 +316,7 @@ namespace Catalog.API.Controllers
             }
             
             string newCouponCode = productUpdateRequest.AppliedCouponCode.Trim();
-            ProductCouponCodeChangedEvent? productCouponCodeChangeEvent = null;
+            ProductCouponCodeChangedIntegrationEvent? productCouponCodeChangeEvent = null;
 
             if(!product.AppliedCouponCode.Equals(newCouponCode, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -326,7 +326,7 @@ namespace Catalog.API.Controllers
                     product.DiscountAmount = 0;
                     product.DiscountPercent = 0;
 
-                    productCouponCodeChangeEvent = new ProductCouponCodeChangedEvent{
+                    productCouponCodeChangeEvent = new ProductCouponCodeChangedIntegrationEvent{
                         ProductId = product.Id,
                         AppliedCouponCode = string.Empty
                     };
@@ -340,7 +340,7 @@ namespace Catalog.API.Controllers
                         product.DiscountAmount = couponDto.DiscountAmount;
                         product.DiscountPercent = couponDto.DiscountPercent;
 
-                        productCouponCodeChangeEvent = new ProductCouponCodeChangedEvent{
+                        productCouponCodeChangeEvent = new ProductCouponCodeChangedIntegrationEvent{
                             ProductId = product.Id,
                             Price = product.Price,
                             AppliedCouponCode = product.AppliedCouponCode,
@@ -393,7 +393,7 @@ namespace Catalog.API.Controllers
             // If product's price is changed, publish integration event
             if(isPriceChanged)
             {
-                await _publishEndpoint.Publish(_mapper.Map<ProductPriceChangedEvent>(product));
+                await _publishEndpoint.Publish(_mapper.Map<ProductPriceChangedIntegrationEvent>(product));
             }
             // If product's applied coupon has been changed, publish integration event
             else if(productCouponCodeChangeEvent != null)

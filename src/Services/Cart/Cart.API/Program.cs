@@ -82,10 +82,11 @@ builder.Services.AddScoped<ICatalogService, CatalogService>();
 
 builder.Services.AddMassTransit(massTransitConfig => 
 {
-    massTransitConfig.AddConsumer<CouponDeletedEventConsumer>();
-    massTransitConfig.AddConsumer<ProductCouponCodeChangedEventConsumer>();
-    massTransitConfig.AddConsumer<ProductPriceChangedEventConsumer>();
-    massTransitConfig.AddConsumer<ProductDeletedEventConsumer>();
+    massTransitConfig.AddConsumer<CouponDeletedIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<ProductCouponCodeChangedIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<ProductPriceChangedIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<ProductDeletedIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<OrderStartedIntegrationEventConsumer>();
 
     massTransitConfig.UsingRabbitMq((context, rabbitmqConfig) => 
     {
@@ -101,24 +102,29 @@ builder.Services.AddMassTransit(massTransitConfig =>
             hostConfig.Password(password);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("CartAPI_CouponDeletedEvent_Queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_CouponDeletedIntegrationEvent_Queue", endpoint => 
         {
-            endpoint.ConfigureConsumer<CouponDeletedEventConsumer>(context);
+            endpoint.ConfigureConsumer<CouponDeletedIntegrationEventConsumer>(context);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductCouponCodeChangedEvent_Queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductCouponCodeChangedIntegrationEvent_Queue", endpoint => 
         {
-            endpoint.ConfigureConsumer<ProductCouponCodeChangedEventConsumer>(context);
+            endpoint.ConfigureConsumer<ProductCouponCodeChangedIntegrationEventConsumer>(context);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductPriceChangedEvent_Queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductPriceChangedIntegrationEvent_Queue", endpoint => 
         {
-            endpoint.ConfigureConsumer<ProductPriceChangedEventConsumer>(context);
+            endpoint.ConfigureConsumer<ProductPriceChangedIntegrationEventConsumer>(context);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductDeletedEvent_Queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_ProductDeletedIntegrationEvent_Queue", endpoint => 
         {
-            endpoint.ConfigureConsumer<ProductDeletedEventConsumer>(context);
+            endpoint.ConfigureConsumer<ProductDeletedIntegrationEventConsumer>(context);
+        });
+
+        rabbitmqConfig.ReceiveEndpoint("CartAPI_OrderStartedIntegrationEvent_Queue", endpoint => 
+        {
+            endpoint.ConfigureConsumer<OrderStartedIntegrationEventConsumer>(context);
         });
     });
 });

@@ -14,7 +14,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMassTransit(massTransitConfig => 
 {
-    massTransitConfig.AddConsumer<UserCreatedEventConsumer>();
+    massTransitConfig.AddConsumer<UserCreatedIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<OrderCancelledIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<OrderPaidIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<OrderShippedIntegrationEventConsumer>();
+    massTransitConfig.AddConsumer<OrderRefundedIntegrationEventConsumer>();
 
     massTransitConfig.UsingRabbitMq((context, rabbitmqConfig) => 
     {
@@ -30,9 +34,29 @@ builder.Services.AddMassTransit(massTransitConfig =>
             hostConfig.Password(password);
         });
 
-        rabbitmqConfig.ReceiveEndpoint("user-created-event-queue", endpoint => 
+        rabbitmqConfig.ReceiveEndpoint("EmailAPI_UserCreatedIntegrationEvent_Queue", endpoint => 
         {
-            endpoint.ConfigureConsumer<UserCreatedEventConsumer>(context);
+            endpoint.ConfigureConsumer<UserCreatedIntegrationEventConsumer>(context);
+        });
+
+        rabbitmqConfig.ReceiveEndpoint("EmailAPI_OrderCancelledIntegrationEvent_Queue", endpoint => 
+        {
+            endpoint.ConfigureConsumer<OrderCancelledIntegrationEventConsumer>(context);
+        });
+
+        rabbitmqConfig.ReceiveEndpoint("EmailAPI_OrderPaidIntegrationEvent_Queue", endpoint => 
+        {
+            endpoint.ConfigureConsumer<OrderPaidIntegrationEventConsumer>(context);
+        });
+
+        rabbitmqConfig.ReceiveEndpoint("EmailAPI_OrderShippedIntegrationEvent_Queue", endpoint => 
+        {
+            endpoint.ConfigureConsumer<OrderShippedIntegrationEventConsumer>(context);
+        });
+
+        rabbitmqConfig.ReceiveEndpoint("EmailAPI_OrderRefundedIntegrationEvent_Queue", endpoint => 
+        {
+            endpoint.ConfigureConsumer<OrderRefundedIntegrationEventConsumer>(context);
         });
     });
 });

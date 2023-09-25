@@ -10,7 +10,7 @@ namespace Discount.API.Mappings
         public MappingProfile()
         {
             CreateMap<Coupon, CouponDto>().ReverseMap();
-            CreateMap<Coupon, CouponDeletedEvent>()
+            CreateMap<Coupon, CouponDeletedIntegrationEvent>()
                 .ForMember(o => o.CouponId, o => o.MapFrom(o => o.Id));
             CreateMap<CouponCreateRequest, Coupon>();
         }

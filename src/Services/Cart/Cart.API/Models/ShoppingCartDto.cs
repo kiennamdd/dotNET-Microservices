@@ -3,7 +3,7 @@ namespace Cart.API.Models
 {
     public class ShoppingCartDto
     {
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
         public string? AppliedCouponCode { get; set; }
         public double DiscountAmount { get; set; }
         public double DiscountPercent { get; set; }
