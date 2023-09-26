@@ -120,6 +120,35 @@
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
+        },
+        {
+            "name": "ApiGateway.Ocelot",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/ApiGateways/OcelotApiGateway/bin/Debug/net7.0/OcelotApiGateway.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/ApiGateways/OcelotApiGateway",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "Docker .NET Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "netCore": {
+                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
+            }
         }
     ],
     "compounds": [
@@ -131,7 +160,8 @@
                 "Identity.API",
                 "Email.API",
                 "Cart.API",
-                "Order.API"
+                "Order.API",
+                "ApiGateway.Ocelot"
             ]
         }
     ]

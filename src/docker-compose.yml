@@ -60,3 +60,10 @@ services:
     build: 
       context: .
       dockerfile: Services\Order\Order.API\Dockerfile
+
+  micro-apigateway-ocelot:
+    image: micro-apigateway-ocelot
+    container_name: micro-apigateway-ocelot
+    build:
+      context: .
+      dockerfile: ApiGateways\OcelotApiGateway\Dockerfile

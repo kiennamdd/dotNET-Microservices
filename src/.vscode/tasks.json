@@ -46,12 +46,12 @@
             "dockerBuild": {
                 "tag": "src:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/ApiGateways/OcelotApiGateway/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
+                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
             }
         },
         {
@@ -62,7 +62,7 @@
             ],
             "dockerBuild": {
                 "tag": "src:latest",
-                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/ApiGateways/OcelotApiGateway/Dockerfile",
                 "context": "${workspaceFolder}",
                 "platform": {
                     "os": "linux",
@@ -71,7 +71,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
+                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
             }
         },
         {
@@ -82,9 +82,8 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj",
-                "enableDebugging": true,
-                "configureSsl": false
+                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj",
+                "enableDebugging": true
             }
         },
         {
@@ -95,7 +94,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
+                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
             }
         }
     ]

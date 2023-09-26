@@ -97,3 +97,16 @@ services:
       - micro-rabbitmq-management
       - micro-postgres
 
+  micro-apigateway-ocelot:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+    ports:
+      - "8888:443"
+    depends_on:
+      - micro-identity-api
+      - micro-discount-api
+      - micro-catalog-api
+      - micro-cart-api
+      - micro-order-api
+
+
