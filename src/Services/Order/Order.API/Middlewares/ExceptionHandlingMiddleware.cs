@@ -3,6 +3,7 @@ using FluentValidation;
 using Newtonsoft.Json;
 using Order.API.Extensions;
 using Order.Application.Common.Models;
+using Order.Domain.Exceptions;
 
 namespace Order.API.Middlewares
 {
@@ -39,10 +40,24 @@ namespace Order.API.Middlewares
 
             var responseDto = ResponseDto.Fail(message, errors);
 
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.StatusCode = GetStatusCode(ex);
             context.Response.ContentType = "application/json";
 
             await context.Response.WriteAsync(JsonConvert.SerializeObject(responseDto));
+        }
+
+        public int GetStatusCode(Exception ex)
+        {
+            int statusCode = ex switch
+            {
+                ValidationException => StatusCodes.Status400BadRequest,
+                KeyNotFoundException => StatusCodes.Status404NotFound,
+                OrderDomainException => StatusCodes.Status400BadRequest,
+                UnableToChangeOrderStatusException => StatusCodes.Status403Forbidden,
+                _ => StatusCodes.Status500InternalServerError
+            };
+
+            return statusCode;
         }
 
         public string GetMessage(Exception ex)
