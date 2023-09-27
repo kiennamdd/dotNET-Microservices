@@ -44,14 +44,14 @@
                 "build"
             ],
             "dockerBuild": {
-                "tag": "src:dev",
+                "tag": "micro-order-api",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/ApiGateways/OcelotApiGateway/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
             }
         },
         {
@@ -62,7 +62,7 @@
             ],
             "dockerBuild": {
                 "tag": "src:latest",
-                "dockerfile": "${workspaceFolder}/ApiGateways/OcelotApiGateway/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
                 "context": "${workspaceFolder}",
                 "platform": {
                     "os": "linux",
@@ -71,7 +71,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
             }
         },
         {
@@ -80,10 +80,26 @@
             "dependsOn": [
                 "docker-build: debug"
             ],
-            "dockerRun": {},
+            "dockerRun": {
+                "env": {
+                    "ASPNETCORE_ENVIRONMENT": "Development",
+                    "ConnectionStrings__Postgres": "Host=micro-postgres;Port=5432;Database=OrderDb;Username=admin;Password=Admin1234@",
+                    "RabbitMqSettings__Host": "micro-rabbitmq-management",
+                    "ApiServiceBaseUrls__CartApi": "http://micro-cart-api:80"
+                },
+                "containerName": "micro-order-api",
+                "ports": [
+                    {
+                        "hostPort": 8004,
+                        "containerPort": 80
+                    }
+                ],
+                "network": "src_default"
+            },
             "netCore": {
-                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj",
-                "enableDebugging": true
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj",
+                "enableDebugging": true,
+                "configureSsl": false
             }
         },
         {
@@ -94,7 +110,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
             }
         }
     ]

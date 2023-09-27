@@ -67,3 +67,7 @@ services:
     build:
       context: .
       dockerfile: ApiGateways\OcelotApiGateway\Dockerfile
+
+  micro-stripe-cli-listener:
+    image: stripe/stripe-cli
+    container_name: micro-stripe-cli-listener

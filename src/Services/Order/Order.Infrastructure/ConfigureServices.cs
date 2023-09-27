@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Order.Application.Common.Interfaces;
 using Order.Application.Common.Interfaces.Infrastructure;
+using Order.Application.Common.Models;
 using Order.Infrastructure.Data;
 using Order.Infrastructure.Data.Interceptors;
 using Order.Infrastructure.Repositories;
@@ -18,6 +19,18 @@ namespace Order.Infrastructure
         public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             StripeConfiguration.ApiKey = configuration.GetValue<string>("Stripe:ApiKey");
+            //Create Stripe webhook endpoint
+            // var options = new WebhookEndpointCreateOptions
+            // {
+            //     Url = configuration.GetValue<string>("Stripe:WebhookEndpoint_OrderService"),
+            //     EnabledEvents = new List<String>
+            //     {
+            //         "checkout.session.completed"
+            //     }
+            // };
+            // var service = new WebhookEndpointService();
+            // var endpoint = service.Create(options);
+            // StripeSettings.EndpointSecret = endpoint.Secret;
 
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventInterceptor>();

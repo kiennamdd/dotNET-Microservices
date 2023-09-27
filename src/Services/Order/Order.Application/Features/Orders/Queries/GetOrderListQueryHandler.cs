@@ -17,21 +17,20 @@ namespace Order.Application.Features.Orders.Queries
 
         public async Task<IEnumerable<CustomerOrder>> Handle(GetOrderListQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<CustomerOrder> list = new List<CustomerOrder>();
+            IEnumerable<CustomerOrder> list = await _orderRepository.GetListAsync(predicate: request.Predicate, 
+                                                                                    includeProperties: request.IncludesProperties);
             
-
             if(request.UserId != Guid.Empty)
             {
                 Buyer? buyer = await _buyerRepository.GetByUserIdAsync(request.UserId);
 
                 if(buyer != null)
-                    list = await _orderRepository.GetListAsync(o => o.BuyerId == buyer.Id, includeProperties: request.IncludesProperties);
-            }
-            else // If userId is not assigned value, return all order (for admin user purposes)
-            {
-                list = await _orderRepository.GetListAsync(includeProperties: request.IncludesProperties);
+                    list = list.Where(o => o.BuyerId == buyer.Id);
+                else
+                    return new List<CustomerOrder>();
             }
 
+            // If userId is not assigned value, return all order (for admin user purposes)
             return list;
         }
     }

@@ -109,4 +109,7 @@ services:
       - micro-cart-api
       - micro-order-api
 
-
+  micro-stripe-cli-listener:
+    command: "listen --api-key $${STRIPE_API_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to micro-order-api:80/api/stripewebhook --skip-verify --events checkout.session.completed"
+    env_file:
+      - stripe_cli.env

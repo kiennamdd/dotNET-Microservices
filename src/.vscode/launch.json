@@ -147,7 +147,7 @@
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
             "netCore": {
-                "appProject": "${workspaceFolder}/ApiGateways/OcelotApiGateway/OcelotApiGateway.csproj"
+                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
             }
         }
     ],
