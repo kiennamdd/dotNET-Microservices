@@ -40,7 +40,7 @@ namespace Order.API.Controllers
             _checkoutRequestValidator = checkoutRequestValidator;
         }
 
-        private async Task<CustomerOrder?> GetOrderOfCurrentUserByIdAsync(string orderId, string includeProperties = "")
+        private async Task<CustomerOrder?> FindOrderByIdAsync(string orderId, Guid userId, string includeProperties = "")
         {
             if(!Guid.TryParse(orderId, out Guid parsedOrderId))
             {
@@ -48,6 +48,14 @@ namespace Order.API.Controllers
                 return null;
             }
 
+            IEnumerable<CustomerOrder> list = await _mediator.Send(new GetOrderListQuery() { UserId = userId, IncludesProperties = includeProperties });
+            CustomerOrder? order = list.FirstOrDefault(o => o.Id == parsedOrderId);
+
+            return order;
+        }
+
+        private async Task<CustomerOrder?> GetOrderOfCurrentUserByIdAsync(string orderId, string includeProperties = "")
+        {
             Guid userId = _currentUser.GetUserId();
             if(userId == Guid.Empty)
             {
@@ -55,9 +63,7 @@ namespace Order.API.Controllers
                 return null;
             }
 
-            IEnumerable<CustomerOrder> list = await _mediator.Send(new GetOrderListQuery() { UserId = userId, IncludesProperties = includeProperties });
-            CustomerOrder? order = list.FirstOrDefault(o => o.Id == parsedOrderId);
-
+            CustomerOrder? order = await FindOrderByIdAsync(orderId, userId, includeProperties);
             return order;
         }
 
@@ -242,7 +248,7 @@ namespace Order.API.Controllers
         [Authorize(Roles = Roles.ADMIN)]
         public async Task<ResponseDto> SetShippedOrderStatus(string orderId)
         {
-            CustomerOrder? order = await GetOrderOfCurrentUserByIdAsync(orderId);
+            CustomerOrder? order = await FindOrderByIdAsync(orderId, Guid.Empty);
 
             if(order is null)
             {
