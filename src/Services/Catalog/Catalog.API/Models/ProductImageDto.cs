@@ -5,6 +5,6 @@ namespace Catalog.API.Models
     {
         public Guid Id { get; set; }
         public string ImageName { get; set; } = string.Empty;
-        public string ThumbnailFileName { get; set; } = string.Empty;
+        public string ImageFileName { get; set; } = string.Empty;
     }
 }
