@@ -12,7 +12,7 @@ namespace Order.Application.Common.Models
         public string ProductName { get; set; } = string.Empty;
         public double ProductOriginalPrice { get; set; }
         public double ProductLastPrice { get; set; }
-        public string ProductThumbnailUrl { get; set; } = string.Empty;
+        public string ProductThumbnailFileName { get; set; } = string.Empty;
         public int Quantity { get; set; }
     }
 }

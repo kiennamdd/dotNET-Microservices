@@ -25,7 +25,7 @@ namespace Order.Application.Features.Orders.Commands
 
             foreach(var dto in request.OrderItemDtos)
             {
-                var orderItem = new OrderItem(dto.Quantity, dto.ProductId, dto.ProductName, dto.ProductOriginalPrice, dto.ProductLastPrice, dto.ProductThumbnailUrl);
+                var orderItem = new OrderItem(dto.Quantity, dto.ProductId, dto.ProductName, dto.ProductOriginalPrice, dto.ProductLastPrice, dto.ProductThumbnailFileName);
                 order.AddOrderItem(orderItem);
             }
 

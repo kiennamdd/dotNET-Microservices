@@ -10,7 +10,7 @@ namespace Order.Application.Common.Models
         public string ProductName { get; set; } = string.Empty;
         public double ProductOriginalPrice { get; set; }
         public double ProductLastPrice { get; set; }
-        public string ProductThumbnailUrl { get; set; } = string.Empty;
+        public string ProductThumbnailFileName { get; set; } = string.Empty;
     }
 
     public static class OrderItemDtoExtension
@@ -24,7 +24,7 @@ namespace Order.Application.Common.Models
                 ProductName = cartItem.ProductName, 
                 ProductOriginalPrice = cartItem.ProductOriginalPrice,
                 ProductLastPrice = cartItem.ProductLastPrice, 
-                ProductThumbnailUrl = cartItem.ProductThumbnailUrl
+                ProductThumbnailFileName = cartItem.ProductThumbnailFileName
             };
         }
 
@@ -37,7 +37,7 @@ namespace Order.Application.Common.Models
                 ProductName = orderItem.ProductName, 
                 ProductOriginalPrice = orderItem.ProductOriginalPrice,
                 ProductLastPrice = orderItem.ProductLastPrice, 
-                ProductThumbnailUrl = orderItem.ProductThumbnailUrl
+                ProductThumbnailFileName = orderItem.ProductThumbnailFileName
             };
         }
 

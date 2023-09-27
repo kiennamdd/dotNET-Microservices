@@ -13,13 +13,13 @@ namespace Order.Domain.Entities
         public string ProductName { get; private set; }
         public double ProductOriginalPrice { get; private set; }
         public double ProductLastPrice { get; private set; }
-        public string ProductThumbnailUrl { get; private set; }
+        public string ProductThumbnailFileName { get; private set; }
 
         // For migration
         public OrderItem() 
         {
             ProductName = string.Empty;
-            ProductThumbnailUrl = string.Empty;
+            ProductThumbnailFileName = string.Empty;
         }
 
         public OrderItem(int quantity, 
@@ -27,7 +27,7 @@ namespace Order.Domain.Entities
                         string productName, 
                         double productOriginalPrice, 
                         double productLastPrice, 
-                        string productThumbnailUrl) 
+                        string productThumbnailFileName) 
         {
             OrderId = Guid.Empty;
             Quantity = quantity > 0 ? quantity : throw new OrderDomainException("Quantity value must be positive value.");
@@ -46,7 +46,7 @@ namespace Order.Domain.Entities
                                         ? productLastPrice 
                                         : throw new OrderDomainException("ProductOriginalPrice can not be negative value.");
                                         
-            ProductThumbnailUrl = productThumbnailUrl;
+            ProductThumbnailFileName = productThumbnailFileName;
         }
 
         public void IncreaseQuantity(int quantity)

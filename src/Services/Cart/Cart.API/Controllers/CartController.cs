@@ -146,7 +146,7 @@ namespace Cart.API.Controllers
                 ProductName = productDto.Name,
                 ProductOriginalPrice = productDto.Price,
                 ProductLastPrice = productDto.Price,
-                ProductThumbnailUrl = productDto.ThumbnailUrl,
+                ProductThumbnailFileName = productDto.ThumbnailFileName,
                 Quantity = upsertRequest.Quantity,
                 ProductAppliedCouponCode = productDto.AppliedCouponCode
             };

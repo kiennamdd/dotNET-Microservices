@@ -193,13 +193,13 @@ namespace Catalog.API.Controllers
                 }
             }
 
-            string baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+            //string baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
             string saveFolder = StaticFolders.GetStaticFolderPath(StaticFolders.ProductImages);
             
             if(productCreateRequest.Thumbnail != null)
             {
                 _fileService.SaveFile(productCreateRequest.Thumbnail, out string fileName, out string localPath, saveFolder);
-                product.ThumbnailUrl = Path.Combine(baseUrl, StaticFolders.ProductImages, fileName);
+                product.ThumbnailFileName = fileName;
                 product.ThumbnailLocalPath = localPath;
             }
 
@@ -213,7 +213,7 @@ namespace Catalog.API.Controllers
                     var productImage = new ProductImage()
                     {
                         ImageName = "image",
-                        ImageUrl = Path.Combine(baseUrl, StaticFolders.ProductImages, fileName),
+                        ImageFileName = fileName,
                         ImageLocalPath = localPath
                     };
 
@@ -472,7 +472,7 @@ namespace Catalog.API.Controllers
             int count = 0;
             if(productImagesAddRequest.Images != null)
             {
-                string baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                //string baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
 
                 foreach(var image in productImagesAddRequest.Images)
                 {
@@ -483,7 +483,7 @@ namespace Catalog.API.Controllers
                     {
                         ProductId = product.Id,
                         ImageName = "image",
-                        ImageUrl = Path.Combine(baseUrl, StaticFolders.ProductImages, fileName),
+                        ImageFileName = fileName,
                         ImageLocalPath = localPath
                     };
 

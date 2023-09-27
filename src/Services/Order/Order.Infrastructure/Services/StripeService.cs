@@ -40,7 +40,8 @@ namespace Order.Infrastructure.Services
                 var productData = new SessionLineItemPriceDataProductDataOptions
                 {
                     Name = item.ProductName,
-                    Images = new List<string>{ item.ProductThumbnailUrl }
+                    // Temporarily disable
+                    // Images = new List<string>{ item.ProductThumbnailFileName }
                 };
 
                 var sessionItem = new SessionLineItemOptions

@@ -14,7 +14,7 @@ namespace Cart.API.Models
         public double DiscountAmount { get;set; }
         public int DiscountPercent { get;set; }
 
-        public string ThumbnailUrl { get; set; } = string.Empty;
+        public string ThumbnailFileName { get; set; } = string.Empty;
 
         public string CategoryName { get; set; } = string.Empty;
         public string BrandName { get; set; } = string.Empty;

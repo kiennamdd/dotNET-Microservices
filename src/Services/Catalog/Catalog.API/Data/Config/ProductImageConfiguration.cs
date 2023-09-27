@@ -10,7 +10,7 @@ namespace Catalog.API.Data.Config
         {
             builder.Property(o => o.ProductId).IsRequired();
 
-            builder.Property(o => o.ImageUrl).IsRequired();
+            builder.Property(o => o.ImageFileName).IsRequired();
 
             builder.Property(o => o.ImageLocalPath).IsRequired();
         }

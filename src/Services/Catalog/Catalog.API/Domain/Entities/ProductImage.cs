@@ -12,7 +12,7 @@ namespace Catalog.API.Domain.Entities
         public Product? Product { get; set; }
 
         public string ImageName { get; set; } = string.Empty;
-        public string ImageUrl { get; set; } = string.Empty;
+        public string ImageFileName { get; set; } = string.Empty;
         public string ImageLocalPath { get; set; } = string.Empty;
     }
 }

@@ -14,7 +14,7 @@ namespace Catalog.API.Domain.Entities
         public double DiscountAmount { get;set; }
         public int DiscountPercent { get;set; }
 
-        public string ThumbnailUrl { get; set; } = string.Empty;
+        public string ThumbnailFileName { get; set; } = string.Empty;
         public string ThumbnailLocalPath { get; set; } = string.Empty;
 
         public int CategoryId { get; set; }
