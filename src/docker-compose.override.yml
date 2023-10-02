@@ -122,3 +122,5 @@ services:
       - ApiServiceBaseUrls__CatalogApi=http://micro-apigateway-ocelot:80
       - ApiServiceBaseUrls__CartApi=http://micro-apigateway-ocelot:80
       - ApiServiceBaseUrls__OrderApi=http://micro-apigateway-ocelot:80
+    depends_on:
+      - micro-apigateway-ocelot
