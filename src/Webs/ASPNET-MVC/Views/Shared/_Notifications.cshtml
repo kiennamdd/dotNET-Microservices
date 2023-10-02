@@ -1,0 +1,13 @@
+@if(!string.IsNullOrEmpty(Convert.ToString(TempData["Error"]))){
+    <script type="text/javascript">
+        toastr.options.positionClass = "toast-bottom-right";
+        toastr.error('@TempData["Error"]');
+    </script>
+}
+@if (!string.IsNullOrEmpty(Convert.ToString(TempData["Success"])))
+{
+    <script type="text/javascript">
+        toastr.options.positionClass = "toast-bottom-right";
+        toastr.success('@TempData["Success"]');
+    </script>
+}

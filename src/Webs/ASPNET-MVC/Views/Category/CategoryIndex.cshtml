@@ -1,0 +1,41 @@
+@model IEnumerable<CategoryDto>
+
+@{
+	ViewData["Title"] = "Category List";
+}
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h1 class="text-dark">Category List</h1>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a class="btn btn-outline-primary" asp-action="CategoryCreate"><i class="bi bi-plus-square"></i> Create New Category</a>
+			</div>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Category Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (CategoryDto category in Model)
+				{
+					<tr>
+						<td>@category.Id</td>
+						<td>@category.Name</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

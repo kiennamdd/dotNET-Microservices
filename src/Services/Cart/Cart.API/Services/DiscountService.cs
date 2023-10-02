@@ -64,5 +64,15 @@ namespace Cart.API.Services
             
             return Math.Max(finalValue, 0);
         }
+
+        public double GetFinalValueAfterDiscount(double value, int discountPercent, double discountAmount, 
+                                                double minValue, double maxDiscountAmount, out double totalDiscountValue)
+        {
+            double finalValue = GetFinalValueAfterDiscount(value, discountPercent, discountAmount, minValue, maxDiscountAmount);
+            
+            totalDiscountValue = value - finalValue;
+            
+            return Math.Max(finalValue, 0);
+        }
     }
 }

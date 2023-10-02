@@ -1,0 +1,41 @@
+@model IEnumerable<BrandDto>
+
+@{
+	ViewData["Title"] = "Brand List";
+}
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h1 class="text-dark">Brand List</h1>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a class="btn btn-outline-primary" asp-action="BrandCreate"><i class="bi bi-plus-square"></i> Create New Brand</a>
+			</div>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Brand Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (BrandDto coupon in Model)
+				{
+					<tr>
+						<td>@coupon.Id</td>
+						<td>@coupon.Name</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

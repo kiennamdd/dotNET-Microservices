@@ -18,6 +18,7 @@ namespace Order.Application.Features.Orders.Queries
         public async Task<IEnumerable<CustomerOrder>> Handle(GetOrderListQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<CustomerOrder> list = await _orderRepository.GetListAsync(predicate: request.Predicate, 
+                                                                                    orderBy: request.OrderBy,
                                                                                     includeProperties: request.IncludesProperties);
             
             if(request.UserId != Guid.Empty)

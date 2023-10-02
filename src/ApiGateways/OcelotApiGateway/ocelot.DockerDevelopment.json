@@ -157,6 +157,18 @@
             }
         },
         {
+            "DownstreamPathTemplate": "/productimages/{imageFileName}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "micro-catalog-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/productimages/{imageFileName}",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
             "DownstreamPathTemplate": "/api/category",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
@@ -397,6 +409,21 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/order/details/{orderId}",
+            "UpstreamHttpMethod": [ "Get" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/order",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "micro-order-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/api/order",
             "UpstreamHttpMethod": [ "Get" ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer"

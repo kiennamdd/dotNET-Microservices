@@ -1,0 +1,48 @@
+@model RegisterRequest
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<form method="post" asp-action="Register">
+    <div class="container">
+        <div class="row text-center">
+            <h1>Register</h1>
+        </div>
+        <div class="row">
+            <div class="col-6 pb-3 offset-md-3">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 pb-3 offset-md-3">
+                <input class="form-control" asp-for="Email" placeholder="Email..." />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-3 offset-md-3">
+                <input class="form-control" asp-for="FullName" placeholder="Name..." />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-3 offset-md-3">
+                <input class="form-control" asp-for="PhoneNumber" placeholder="Phone number..." />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-3 offset-md-3">
+                <input class="form-control" asp-for="Password" placeholder="Password..." />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="col-2 pb-3 offset-md-3">
+                <select class="form-select" asp-for="Role" asp-items="@ViewBag.RoleList">
+                    <option disabled selected>-Select Role-</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <input type="submit" value="Register" class="btn btn-success form-control">
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

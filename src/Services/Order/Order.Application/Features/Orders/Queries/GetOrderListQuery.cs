@@ -10,13 +10,16 @@ namespace Order.Application.Features.Orders.Queries
         public Guid UserId { get; set; } = Guid.Empty;
         public string IncludesProperties { get; set; } = string.Empty;
         public Expression<Func<CustomerOrder, bool>>? Predicate { get; set; } = null;
+        public Func<IQueryable<CustomerOrder>, IOrderedQueryable<CustomerOrder>>? OrderBy = null;
 
         public GetOrderListQuery()
         {
             
         }
 
-        public GetOrderListQuery(Guid userId, Expression<Func<CustomerOrder, bool>>? predicate = null, string includeProperties = "")
+        public GetOrderListQuery(Guid userId, Expression<Func<CustomerOrder, bool>>? predicate = null, 
+                                            Func<IQueryable<CustomerOrder>, IOrderedQueryable<CustomerOrder>>? orderBy = null, 
+                                            string includeProperties = "")
         {
             UserId = userId;
             Predicate = predicate;

@@ -113,3 +113,12 @@ services:
     command: "listen --api-key $${STRIPE_API_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to micro-order-api:80/api/stripewebhook --skip-verify --events checkout.session.completed"
     env_file:
       - stripe_cli.env
+
+  micro-aspnet-mvc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiServiceBaseUrls__IdentityApi=http://micro-identity-api:80
+      - ApiServiceBaseUrls__DiscountApi=http://micro-apigateway-ocelot:80
+      - ApiServiceBaseUrls__CatalogApi=http://micro-apigateway-ocelot:80
+      - ApiServiceBaseUrls__CartApi=http://micro-apigateway-ocelot:80
+      - ApiServiceBaseUrls__OrderApi=http://micro-apigateway-ocelot:80

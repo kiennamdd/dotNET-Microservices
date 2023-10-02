@@ -276,7 +276,12 @@ namespace Order.API.Controllers
                 return ResponseDto.Fail();
             }
 
-            IEnumerable<CustomerOrder> list = await _mediator.Send(new GetOrderListQuery() { UserId = userId });
+            var query = new GetOrderListQuery() 
+            { 
+                UserId = userId, 
+            };
+
+            IEnumerable<CustomerOrder> list = await _mediator.Send(query);
             return ResponseDto.Success(result: list.ToOrderDtoList());
         }
 
@@ -284,6 +289,19 @@ namespace Order.API.Controllers
         [Route("details/{orderId}")]
         public async Task<ResponseDto> OrderDetails(string orderId)
         {
+            if(!Guid.TryParse(orderId, out Guid parsedOrderId))
+            {
+                _logger.LogWarning($"Request with invalid order identifier. Request order ID: {orderId}");
+                return ResponseDto.Success(result: null);
+            }
+
+            // Admin can retrieve user order details
+            if(_currentUser.IsInRole(Roles.ADMIN))
+            {
+                CustomerOrder? order = await _mediator.Send(new GetOrderDetailsQuery(parsedOrderId));
+                return ResponseDto.Success(result: order?.ToOrderDto());
+            }
+
             Guid userId = _currentUser.GetUserId();
             if(userId == Guid.Empty)
             {
@@ -291,14 +309,23 @@ namespace Order.API.Controllers
                 return ResponseDto.Fail();
             }
 
-            if(!Guid.TryParse(orderId, out Guid parsedOrderId))
+            CustomerOrder? customerOrder = await _mediator.Send(new GetOrderDetailsQuery(parsedOrderId));
+            if(customerOrder is null || customerOrder?.Buyer is null || customerOrder.Buyer.UserId != userId)
             {
-                _logger.LogWarning($"Request with invalid order identifier. Request order ID: {orderId}");
-                return ResponseDto.Success(result: null);
+                _logger.LogError($"Unauthorized user retrieving another user's order details. User ID: {userId}");
+                return ResponseDto.Fail("Unauthorized.");
             }
 
-            CustomerOrder? order = await _mediator.Send(new GetOrderDetailsQuery(parsedOrderId));
-            return ResponseDto.Success(result: order?.ToOrderDto());
+            return ResponseDto.Success(result: customerOrder.ToOrderDto());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = Roles.ADMIN)]
+        public async Task<ResponseDto> GetOrderList()
+        {
+            var query = new GetOrderListQuery();
+            IEnumerable<CustomerOrder> list = await _mediator.Send(query);
+            return ResponseDto.Success(result: list.ToOrderDtoList());
         }
     }
 }

@@ -87,7 +87,10 @@ namespace Cart.API.Controllers
                                                                                         couponDto.DiscountPercent,
                                                                                         couponDto.DiscountAmount,
                                                                                         couponDto.MinOrderTotal,
-                                                                                        couponDto.MaxDiscountAmount);
+                                                                                        couponDto.MaxDiscountAmount,
+                                                                                        out double totalDiscountValue);
+
+                    shoppingCart.TotalDiscountValue = totalDiscountValue;
                 }
             }
 
@@ -190,7 +193,7 @@ namespace Cart.API.Controllers
 
         [HttpPost]
         [Route("ApplyCoupon")]
-        public async Task<ResponseDto> ApplyCoupon([FromBody] string couponCode)
+        public async Task<ResponseDto> ApplyCoupon(string couponCode)
         {
             couponCode = couponCode.Trim();
 

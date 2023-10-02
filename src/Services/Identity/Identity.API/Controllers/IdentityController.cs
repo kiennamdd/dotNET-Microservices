@@ -37,7 +37,7 @@ namespace Identity.API.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<ResponseDto> Register(RegisterRequest registerRequest)
+        public async Task<ResponseDto> Register([FromBody] RegisterRequest registerRequest)
         {
             await _registerValidator.ValidateAndThrowAsync(registerRequest);
 
@@ -69,7 +69,7 @@ namespace Identity.API.Controllers
 
         [HttpPost]
         [Route("SignIn")]
-        public async Task<ResponseDto> SignIn(SignInRequest signInRequest)
+        public async Task<ResponseDto> SignIn([FromBody] SignInRequest signInRequest)
         {
             await _signInValidator.ValidateAndThrowAsync(signInRequest);
 

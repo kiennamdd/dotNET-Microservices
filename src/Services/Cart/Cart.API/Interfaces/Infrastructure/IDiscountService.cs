@@ -7,5 +7,6 @@ namespace Cart.API.Interfaces.Infrastructure
     {
         Task<CouponDto?> GetCouponByCodeAsync(string couponCode);
         double GetFinalValueAfterDiscount(double value, int discountPercent, double discountAmount, double minValue, double maxDiscountAmount);
+        double GetFinalValueAfterDiscount(double value, int discountPercent, double discountAmount, double minValue, double maxDiscountAmount, out double totalDiscountValue);
     }
 }

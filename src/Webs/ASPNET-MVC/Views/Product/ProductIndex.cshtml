@@ -1,0 +1,64 @@
+@model IEnumerable<ProductDto>
+
+@{
+    ViewData["Title"] = "Manage Product";
+}
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h1 class="text-dark">Products List</h1>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a class="btn btn-outline-primary" asp-controller="Product" asp-action="ProductCreate">
+					<i class="bi bi-plus-square"></i> Create New Product
+				</a>
+			</div>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Brand Name</th>
+					<th>Category Name</th>
+					<th>Price</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<th>
+							<div class="text-center">
+								<img src="@item.ThumbnailUrl" class="rounded" width="100%" />
+							</div>
+						</th>
+						<th>@item.Id</th>
+						<th>@item.Name</th>
+						<th>@item.BrandName</th>
+						<th>@item.CategoryName</th>
+						<th>@item.Price.ToString("c")</th>
+						<td>
+							<a class="btn btn-success" asp-controller="Product" asp-action="ProductUpdate" asp-route-productId="@item.Id">
+								<i class="bi bi-pencil-square"></i>
+							</a>
+							<form method="post" asp-controller="Product" asp-action="ProductDelete" asp-route-productId="@item.Id">
+								<button class="btn btn-danger" type="submit"><i class="bi bi-trash"></i></button>
+							</form>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

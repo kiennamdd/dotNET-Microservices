@@ -10,7 +10,7 @@ namespace Order.Application.Common.Models
         public double OrderTotal { get; set; }
         public DateTime OrderDate { get; set; } 
         public DateTime PaidDate { get; set; } 
-        public OrderStatus Status { get; set; } = OrderStatus.Unknown;
+        public string Status { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public bool IsPaid { get; set; }
         public IEnumerable<OrderItemDto> Items { get; set;} = new List<OrderItemDto>();
@@ -27,7 +27,7 @@ namespace Order.Application.Common.Models
                 OrderTotal = order.OrderTotal,
                 OrderDate = order.OrderDate,
                 PaidDate = order.PaidDate,
-                Status = order.Status,
+                Status = order.Status.Name,
                 Description = order.Description,
                 IsPaid = order.IsPaid,
                 Items = order.Items.ToOrderItemDtoList()

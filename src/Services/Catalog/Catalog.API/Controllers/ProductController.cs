@@ -226,7 +226,7 @@ namespace Catalog.API.Controllers
             _productRepository.Add(product);
             await _unitOfWork.SaveChangesAsync();
 
-            return ResponseDto.Success("Product created successfully!", product.Id);
+            return ResponseDto.Success("Product created successfully!", new ProductCreateResponse { ProductId = product.Id });
         }
 
         [HttpDelete]

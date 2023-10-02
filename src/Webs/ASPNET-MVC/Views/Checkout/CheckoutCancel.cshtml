@@ -1,0 +1,14 @@
+@model string
+
+@{
+    ViewData["Title"] = "Checkout cancelled";
+}
+
+<div class="text-center">
+    <h1 class="text-info pt-4">Your order has been cancelled.</h1>
+    <div>
+        <a class="btn btn-outline-warning mt-2 btn-sm" asp-controller="Home" asp-action="Index">
+            Continue Shopping
+        </a>
+    </div>
+</div>

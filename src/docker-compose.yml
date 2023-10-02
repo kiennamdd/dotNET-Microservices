@@ -71,3 +71,7 @@ services:
   micro-stripe-cli-listener:
     image: stripe/stripe-cli
     container_name: micro-stripe-cli-listener
+
+  micro-aspnet-mvc:
+    image: micro-aspnet-mvc
+    container_name: micro-aspnet-mvc

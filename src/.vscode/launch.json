@@ -142,12 +142,23 @@
             }
         },
         {
-            "name": "Docker .NET Launch",
-            "type": "docker",
+            "name": "ASPNET-MVC",
+            "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "docker-run: debug",
-            "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Webs/ASPNET-MVC/bin/Debug/net6.0/ASPNET-MVC.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Webs/ASPNET-MVC",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
             }
         }
     ],
@@ -161,7 +172,8 @@
                 "Email.API",
                 "Cart.API",
                 "Order.API",
-                "ApiGateway.Ocelot"
+                "ApiGateway.Ocelot",
+                //"ASPNET-MVC"
             ]
         }
     ]

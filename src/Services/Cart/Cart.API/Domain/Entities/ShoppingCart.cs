@@ -16,6 +16,8 @@ namespace Cart.API.Domain.Entities
 
         [NotMapped]
         public double CartTocal { get; set; }
+        [NotMapped]
+        public double TotalDiscountValue { get; set; }
 
         public IEnumerable<CartItem> Items { get; set; }
 

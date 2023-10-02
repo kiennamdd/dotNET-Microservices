@@ -1,0 +1,36 @@
+@model SignInRequest
+
+@{
+    ViewData["Title"] = "SignIn";
+}
+
+<form method="post" asp-action="SignIn">
+    <div class="container">
+        <div class="row text-center">
+            <h1>Login</h1>
+        </div>
+        <div class="row">
+            <div class="col-6 pb-3 offset-md-3">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 pb-3 offset-md-3">
+                <input class="form-control" asp-for="Email" placeholder="Email..." />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-3 offset-md-3">
+                <input class="form-control" type="password" asp-for="Password" placeholder="Password..." />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <input class="form-control" asp-for="ReturnUrl" hidden value="temp" />
+            <div class="col-6 offset-md-3">
+                <input type="submit" value="Login" class="btn btn-success form-control">
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
