@@ -1,0 +1,126 @@
+version: '3.4'
+
+services:
+  micro-rabbitmq-management:
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=Admin1234@
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  micro-mongodb:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=Admin1234@
+    ports:
+      - "27017:27017" 
+
+  micro-sqlserver:
+    environment:
+      - MSSQL_SA_PASSWORD=Admin1234@
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
+  micro-postgres:
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Admin1234@
+    ports:
+      - "5432:5432"
+
+  micro-discount-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__MongoDb=mongodb://admin:Admin1234%40@micro-mongodb:27017/
+      - RabbitMqSettings__Host=micro-rabbitmq-management
+    ports:
+      - "8001:8001"
+    depends_on:
+      - micro-mongodb
+
+  micro-catalog-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SqlServer=Server=micro-sqlserver,1433;Database=Catalogdb;User ID=SA;Password=Admin1234@
+      - ServiceApiUrls__DiscountApi=http://micro-discount-api:80
+      - RabbitMqSettings__Host=micro-rabbitmq-management
+    ports:
+      - "8002:8002"
+    depends_on:
+      - micro-sqlserver
+      - micro-identity-api
+
+  micro-identity-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SqlServer=Server=micro-sqlserver,1433;Database=IdentityDb;User ID=SA;Password=Admin1234@
+      - RabbitMqSettings__Host=micro-rabbitmq-management
+    ports:
+      - "8000:8000"
+    depends_on:
+      - micro-sqlserver
+      - micro-rabbitmq-management
+
+  micro-email-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMqSettings__Host=micro-rabbitmq-management
+    ports:
+      - "8005:8005"
+    depends_on:
+      - micro-rabbitmq-management
+
+  micro-cart-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Postgres=Host=micro-postgres;Port=5432;Database=CartDb;Username=admin;Password=Admin1234@
+      - RabbitMqSettings__Host=micro-rabbitmq-management
+      - ApiServiceBaseUrls__DiscountApi=http://micro-discount-api:80
+      - ApiServiceBaseUrls__CatalogApi=http://micro-catalog-api:80
+    ports:
+      - "8003:8003"
+    depends_on:
+      - micro-rabbitmq-management
+      - micro-postgres
+
+  micro-order-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Postgres=Host=micro-postgres;Port=5432;Database=OrderDb;Username=admin;Password=Admin1234@
+      - RabbitMqSettings__Host=micro-rabbitmq-management
+      - ApiServiceBaseUrls__CartApi=http://micro-cart-api:80
+    ports:
+      - "8004:8004"
+    depends_on:
+      - micro-rabbitmq-management
+      - micro-postgres
+
+  micro-apigateway-ocelot:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerDevelopment
+    ports:
+      - "443:443"
+    depends_on:
+      - micro-identity-api
+      - micro-discount-api
+      - micro-catalog-api
+      - micro-cart-api
+      - micro-order-api
+
+  micro-stripe-cli-listener:
+    command: "listen --api-key $${STRIPE_API_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to micro-order-api:80/api/stripewebhook --skip-verify --events checkout.session.completed"
+    env_file:
+      - stripe_cli.env
+
+  micro-aspnet-mvc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiServiceBaseUrls__IdentityApi=http://micro-identity-api:80
+      - ApiServiceBaseUrls__DiscountApi=http://micro-apigateway-ocelot:80
+      - ApiServiceBaseUrls__CatalogApi=http://micro-apigateway-ocelot:80
+      - ApiServiceBaseUrls__CartApi=http://micro-apigateway-ocelot:80
+      - ApiServiceBaseUrls__OrderApi=http://micro-apigateway-ocelot:80
+    depends_on:
+      - micro-apigateway-ocelot

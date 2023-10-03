@@ -44,14 +44,14 @@
                 "build"
             ],
             "dockerBuild": {
-                "tag": "micro-order-api",
+                "tag": "src:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Webs/ASPNET-MVC/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
+                "appProject": "${workspaceFolder}/Webs/ASPNET-MVC/ASPNET-MVC.csproj"
             }
         },
         {
@@ -62,7 +62,7 @@
             ],
             "dockerBuild": {
                 "tag": "src:latest",
-                "dockerfile": "${workspaceFolder}/Services/Order/Order.API/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Webs/ASPNET-MVC/Dockerfile",
                 "context": "${workspaceFolder}",
                 "platform": {
                     "os": "linux",
@@ -71,7 +71,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
+                "appProject": "${workspaceFolder}/Webs/ASPNET-MVC/ASPNET-MVC.csproj"
             }
         },
         {
@@ -80,26 +80,10 @@
             "dependsOn": [
                 "docker-build: debug"
             ],
-            "dockerRun": {
-                "env": {
-                    "ASPNETCORE_ENVIRONMENT": "Development",
-                    "ConnectionStrings__Postgres": "Host=micro-postgres;Port=5432;Database=OrderDb;Username=admin;Password=Admin1234@",
-                    "RabbitMqSettings__Host": "micro-rabbitmq-management",
-                    "ApiServiceBaseUrls__CartApi": "http://micro-cart-api:80"
-                },
-                "containerName": "micro-order-api",
-                "ports": [
-                    {
-                        "hostPort": 8004,
-                        "containerPort": 80
-                    }
-                ],
-                "network": "src_default"
-            },
+            "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj",
-                "enableDebugging": true,
-                "configureSsl": false
+                "appProject": "${workspaceFolder}/Webs/ASPNET-MVC/ASPNET-MVC.csproj",
+                "enableDebugging": true
             }
         },
         {
@@ -110,7 +94,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Services/Order/Order.API/Order.API.csproj"
+                "appProject": "${workspaceFolder}/Webs/ASPNET-MVC/ASPNET-MVC.csproj"
             }
         }
     ]
