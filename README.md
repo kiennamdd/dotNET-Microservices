@@ -2,7 +2,7 @@
 - An E-Commerce application, designed towards microservices architecture. <br>
 - Database used are: PostgresSQL, MS-SQL, MongoDb
 - Each backend service is built using ASP.NET Core WebApi (.NET 6). Each service performs an CRUD for entities and works with database using EntityFramework and repository pattern.<br>
-- Asynchronous communication between services (send/receive integration events) is implemented using RabbitMQ with MassTransit.<br>
+- Asynchronous communication between services (send/listen integration events) is implemented using RabbitMQ and MassTransit.<br>
 - Clean Architecture implemented for Cart and Order service. Furthermore, Order service is developed with CQRS pattern and Event-driven design.<br>
 - Stripe API (https://stripe.com) is integrated for managing checkout session, retrieving payment event in realtime.<br>
 - Before providing APIs to frontend, an API Gateway is implemented with Ocelot.
